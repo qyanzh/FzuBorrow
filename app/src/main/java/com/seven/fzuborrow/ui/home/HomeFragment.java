@@ -1,5 +1,6 @@
 package com.seven.fzuborrow.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,12 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.seven.fzuborrow.R;
+import com.seven.fzuborrow.ui.home.detail.GoodDetailActivity;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
 
-    GoodsAdapter goodsAdapter = new GoodsAdapter();
+    GoodsAdapter goodsAdapter;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -26,8 +28,18 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        RecyclerView recyclerView;
-        recyclerView = root.findViewById(R.id.recycler_view);
+        goodsAdapter = new GoodsAdapter(good -> {
+            Intent intent =new Intent(this.getActivity(), GoodDetailActivity.class);
+            startActivity(intent);
+        });
+        goodsAdapter.addOnTabClickListener(type->{
+            if(type.equals("活动室")) {
+
+            } else if(type.equals("个人闲置")) {
+
+            }
+        });
+        RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
         recyclerView.setAdapter(goodsAdapter);
         recyclerView.setNestedScrollingEnabled(true);
@@ -43,16 +55,13 @@ public class HomeFragment extends Fragment {
                     }
                 }
             }
-
         });
         subscribeUi();
         return root;
     }
 
     private void subscribeUi() {
-        homeViewModel.getGoods().observe(this, goods -> {
-            goodsAdapter.submitList(goods);
-        });
+        homeViewModel.getGoods().observe(this, goods -> goodsAdapter.submitList(goods));
     }
 
     private static final String TAG = "HomeFragment";
