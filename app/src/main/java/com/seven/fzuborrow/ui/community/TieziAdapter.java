@@ -39,7 +39,7 @@ public class TieziAdapter extends ListAdapter<Object, TieziAdapter.ViewHolder> {
 
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         ViewHolder(@NonNull View itemView) {
             super(itemView);
         }

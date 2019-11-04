@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F2F2F2"
     android:orientation="vertical"
     tools:context=".ui.mine.MyManagerActivity">
 
@@ -13,25 +14,29 @@
         android:background="@color/colorPrimary">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:id="@+id/manager_back"
+            android:src="@drawable/cg_jiantou_zuo"
+            android:layout_marginLeft="10dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp" />
 
         <TextView
-
+            android:id="@+id/manager_back_text"
+            android:layout_marginLeft="2dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="我的"
             android:textColor="#000000"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="130dp"
+            android:layout_width="107dp"
+            android:layout_height="30dp"
             android:gravity="center"
+            android:layout_marginLeft="90dp"
             android:text="我管理的"
             android:textColor="#000000"
-            android:textSize="20sp" />
+            android:textSize="17sp" />
 
 
     </androidx.appcompat.widget.Toolbar>
