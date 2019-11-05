@@ -1,10 +1,18 @@
 package com.seven.fzuborrow;
 
 import com.seven.fzuborrow.network.Api;
+import com.seven.fzuborrow.network.response.LoginResponse;
 
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
+
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,15 +30,16 @@ public class ExampleUnitTest {
     @Test
     public void registerTest() throws IOException {
 
-//        Api.get().login("zqy", "12345")
-//                .doOnNext(loginResponse -> {
-//                    System.out.println(loginResponse.getMessage());
-//                }).doOnNext(loginResponse -> {
-//                    System.out.println("12231");
-//                }
-//        ).subscribe();
+        Api.get().login("zqy", "12345")
+                .flatMap(new Function<LoginResponse, ObservableSource<?>>() {
+                    @Override
+                    public ObservableSource<?> apply(LoginResponse loginResponse) throws Exception {
+                        File file = new File(getClass().getResource("/ic_phone.png").toURI());
+                        RequestBody fileBody = RequestBody.create(file, MediaType.parse("image/png"));
+                        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), fileBody);
+                        return Api.get().uploadFile(loginResponse.getData(), filePart, 1);
+                    }
+                }).subscribe();
 
-        Api.get().register("asd", "123", "031702420", "218456..", "510")
-                .subscribe();
     }
 }
