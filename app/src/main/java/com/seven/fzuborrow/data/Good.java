@@ -1,22 +1,70 @@
 package com.seven.fzuborrow.data;
 
 public class Good {
-    private long id;
+    private long gid;
+    private long uid;
+    private String location;
+    private String imgurl;
+    private int status;
+    private String type;
     private String name;
-    private String profile;
+    private String detail;
 
-    public Good(long id, String name, String profile) {
-        this.id = id;
+    public Good() {
+    }
+
+    public Good(long gid, String name, String profile) {
+        this.gid = gid;
         this.name = name;
-        this.profile = profile;
+        this.detail = profile;
     }
 
-    public long getId() {
-        return id;
+    public long getGid() {
+        return gid;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setGid(long gid) {
+        this.gid = gid;
+    }
+
+    public long getUid() {
+        return uid;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getImgurl() {
+        return imgurl;
+    }
+
+    public void setImgurl(String imgurl) {
+        this.imgurl = imgurl;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getName() {
@@ -27,11 +75,11 @@ public class Good {
         this.name = name;
     }
 
-    public String getProfile() {
-        return profile;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setProfile(String profile) {
-        this.profile = profile;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 }

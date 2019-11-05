@@ -29,7 +29,7 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
         super(new DiffUtil.ItemCallback<Good>() {
             @Override
             public boolean areItemsTheSame(@NonNull Good oldItem, @NonNull Good newItem) {
-                return oldItem.getId() == newItem.getId();
+                return oldItem.getGid() == newItem.getGid();
             }
 
             @Override
@@ -94,7 +94,7 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
             Good good = getItem(position - 1);
             holder.itemView.setOnClickListener(v -> listener.onClick(good));
             ((ItemViewHolder) holder).name.setText(good.getName());
-            ((ItemViewHolder) holder).profile.setText(good.getProfile());
+            ((ItemViewHolder) holder).profile.setText(good.getDetail());
         } else if (holder instanceof HeaderViewHolder) {
             ((HeaderViewHolder) holder).tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
                 @Override

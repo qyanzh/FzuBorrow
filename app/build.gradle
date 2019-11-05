@@ -38,12 +38,20 @@ dependencies {
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
 
+    //okhttp logging
+    implementation("com.squareup.okhttp3:logging-interceptor:4.2.1")
+
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.10.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
 
     //moshi
     implementation "com.squareup.moshi:moshi:1.8.0"
+    implementation 'com.squareup.retrofit2:converter-moshi:2.6.2'
+
+    //Rxjava
+    implementation "io.reactivex.rxjava3:rxjava:3.0.0-RC4"
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.6.2'
 
     //CircleImageView
     implementation 'de.hdodenhof:circleimageview:3.0.1'
