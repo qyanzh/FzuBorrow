@@ -33,8 +33,9 @@ public class HomeFragment extends Fragment {
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         goodsAdapter = new GoodsAdapter(good -> {
-            Log.d(TAG, "onCreateView: " + good.getName());
-            Intent intent = new Intent(this.getActivity(), GoodDetailActivity.class);
+            Intent intent = new Intent(this.getActivity(),
+                    GoodDetailActivity.class);
+            intent.putExtra("good", good);
             startActivity(intent);
         });
         goodsAdapter.addOnTabClickListener(type -> {
@@ -71,12 +72,7 @@ public class HomeFragment extends Fragment {
     private void subscribeUi() {
 
         homeViewModel.getGoods().observe(this, goods -> {
-            goodsAdapter.submitList(goods,()->{
-                for (Good good : goodsAdapter.getCurrentList()) {
-                    Log.d(TAG, "subscribeUi: " + good.getName());
-                }
-            });
-
+            goodsAdapter.submitList(goods);
         });
     }
 
