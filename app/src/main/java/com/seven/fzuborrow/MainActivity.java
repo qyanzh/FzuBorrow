@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navView.setOnNavigationItemSelectedListener(this);
         viewPager = findViewById(R.id.view_pager);
         viewPager.addOnPageChangeListener(this);
+        viewPager.setOffscreenPageLimit(4);
 
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @Override

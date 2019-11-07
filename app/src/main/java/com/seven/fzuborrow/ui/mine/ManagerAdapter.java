@@ -1,10 +1,7 @@
 package com.seven.fzuborrow.ui.mine;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +12,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.seven.fzuborrow.R;
 import com.seven.fzuborrow.data.Good;
-import com.seven.fzuborrow.ui.community.TieziAdapter;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class ManagerAdapter extends RecyclerView.Adapter<ManagerAdapter.ViewHolder> {

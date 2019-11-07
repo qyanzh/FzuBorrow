@@ -3,6 +3,7 @@ package com.seven.fzuborrow.ui.home.detail;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -73,7 +74,6 @@ public class GoodDetailActivity extends AppCompatActivity {
 
     @SuppressLint("CheckResult")
     private void showBorrowDialog() {
-
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                 .setView(R.layout.dialog_borrow)
                 .setPositiveButton("借用", null)

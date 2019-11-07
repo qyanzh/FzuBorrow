@@ -37,7 +37,7 @@ public class ExampleUnitTest {
                         File file = new File(getClass().getResource("/ic_phone.png").toURI());
                         RequestBody fileBody = RequestBody.create(file, MediaType.parse("image/png"));
                         MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), fileBody);
-                        return Api.get().uploadFile(loginResponse.getData(), filePart, 1);
+                        return Api.get().uploadFile(loginResponse.getToken(), filePart, 1);
                     }
                 }).subscribe();
 
