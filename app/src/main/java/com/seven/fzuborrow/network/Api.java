@@ -17,7 +17,6 @@ public class Api {
 
     private static HttpLoggingInterceptor logging = new HttpLoggingInterceptor(x -> {
         System.out.println(x);
-        Log.d("okhttp", x);
     }).setLevel(HttpLoggingInterceptor.Level.BODY);
 
     private static OkHttpClient client = new OkHttpClient.Builder()

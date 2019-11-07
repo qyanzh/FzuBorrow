@@ -6,6 +6,16 @@ public class User {
 
     private String displayName;
 
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     private static volatile User loggedInUser;
 
     public String getNumber() {
