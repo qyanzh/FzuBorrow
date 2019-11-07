@@ -4,17 +4,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.seven.fzuborrow.R;
 import com.seven.fzuborrow.data.Good;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
 
@@ -25,6 +31,26 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
     private GoodClickListener listener;
     private TabClickListener tabListener;
 
+    @Override
+    public void submitList(@Nullable List<Good> list) {
+        submitList(list,null);
+    }
+
+    @Override
+    public void submitList(@Nullable List<Good> list, @Nullable Runnable commitCallback) {
+        Good header = new Good();
+        header.setGid(Integer.MIN_VALUE);
+
+        Good footer = new Good();
+        footer.setGid(Integer.MAX_VALUE);
+
+        List<Good> goods = new ArrayList<>();
+        goods.add(header);
+        goods.addAll(list);
+        goods.add(footer);
+        super.submitList(goods,commitCallback);
+    }
+
     GoodsAdapter(GoodClickListener listener) {
         super(new DiffUtil.ItemCallback<Good>() {
             @Override
@@ -34,7 +60,7 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
 
             @Override
             public boolean areContentsTheSame(@NonNull Good oldItem, @NonNull Good newItem) {
-                return oldItem.getName().equals(newItem.getName());
+                return oldItem.getGid() == newItem.getGid();
             }
         });
         this.listener = listener;
@@ -47,13 +73,39 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_ITEM) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.good_item, parent, false);
-            final ItemViewHolder holder = new ItemViewHolder(view);
-            holder.itemView.setOnClickListener(v -> Log.d(TAG, "onCreateViewHolder: " + holder.name));
-            return holder;
+            return new ItemViewHolder(view);
         } else if (viewType == TYPE_HEADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.banner_item, parent, false);
             final HeaderViewHolder holder = new HeaderViewHolder(view);
-            holder.tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
+            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+            layoutParams.setFullSpan(true);
+            holder.itemView.setLayoutParams(layoutParams);
+            return holder;
+        } else {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.load_item, parent, false);
+            final FooterViewHolder holder = new FooterViewHolder(view);
+            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+            layoutParams.setFullSpan(true);
+            holder.itemView.setLayoutParams(layoutParams);
+            return holder;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ItemViewHolder) {
+            Good good = getItem(position);
+            holder.itemView.setOnClickListener(v -> listener.onClick(good));
+            Log.d(TAG, "onBindViewHolder: "+good.getName());
+            ((ItemViewHolder) holder).name.setText(good.getName());
+            ((ItemViewHolder) holder).profile.setText(good.getDetail());
+            if(good.hasImage()) {
+                Glide.with(holder.itemView).load(good.getImgurl()).into( ((ItemViewHolder) holder).image);
+            } else {
+                Glide.with(holder.itemView).load(R.drawable.banner_placeholder).into( ((ItemViewHolder) holder).image);
+            }
+        } else if (holder instanceof HeaderViewHolder) {
+            ((HeaderViewHolder) holder).tabLayout.setOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
                     if(tabListener!=null) {
@@ -72,46 +124,8 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
 
                 }
             });
-            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
-            layoutParams.setFullSpan(true);
-            holder.itemView.setLayoutParams(layoutParams);
-            return holder;
         } else {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.load_item, parent, false);
-            final FooterViewHolder holder = new FooterViewHolder(view);
-            holder.itemView.setOnClickListener(v -> {
-            });
-            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
-            layoutParams.setFullSpan(true);
-            holder.itemView.setLayoutParams(layoutParams);
-            return holder;
-        }
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if (holder instanceof ItemViewHolder) {
-            Good good = getItem(position - 1);
-            holder.itemView.setOnClickListener(v -> listener.onClick(good));
-            ((ItemViewHolder) holder).name.setText(good.getName());
-            ((ItemViewHolder) holder).profile.setText(good.getDetail());
-        } else if (holder instanceof HeaderViewHolder) {
-            ((HeaderViewHolder) holder).tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
-                @Override
-                public void onTabSelected(TabLayout.Tab tab) {
-
-                }
-
-                @Override
-                public void onTabUnselected(TabLayout.Tab tab) {
-
-                }
-
-                @Override
-                public void onTabReselected(TabLayout.Tab tab) {
-
-                }
-            });
+            holder.itemView.setVisibility(View.GONE);
         }
     }
 
@@ -119,11 +133,13 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
 
         TextView name;
         TextView profile;
+        ImageView image;
 
         ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.good_name);
             profile = itemView.findViewById(R.id.good_profile);
+            image = itemView.findViewById(R.id.good_image);
         }
     }
 
@@ -144,10 +160,6 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
         }
     }
 
-    @Override
-    public int getItemCount() {
-        return super.getItemCount() + 2;
-    }
 
     @Override
     public int getItemViewType(int position) {
