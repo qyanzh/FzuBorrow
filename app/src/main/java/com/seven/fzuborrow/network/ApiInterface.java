@@ -42,8 +42,9 @@ public interface ApiInterface {
     @GET("good/findAllGoods")
     Observable<FindAllGoodsResponse> findAllGood(
             @Header("XW-Token") String token,
-            @Query("type") String type
-    );//根据类别("good"/"room")获取物品
+            @Query("type") String type,
+            @Query("keyword") String keyword
+    );//根据类别("good"/"room")和关键字获取物品
 
     @POST("request/apply")
     @FormUrlEncoded
