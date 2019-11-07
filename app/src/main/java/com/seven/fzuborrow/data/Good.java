@@ -1,14 +1,14 @@
 package com.seven.fzuborrow.data;
 
 public class Good {
-    private long gid;
-    private long uid;
-    private String location;
-    private String imgurl;
-    private int status;
-    private String type;
-    private String name;
-    private String detail;
+    private long gid;            //物品的id
+    private long uid;           //用户的id
+    private String location;    //物品的地址？
+    private String imgurl;      //图片的url
+    private int status;         //租借的状态
+    private String type;        //区分闲置物品还是活动室
+    private String name;        //物品的名字
+    private String detail;      // 物品的详细说明
 
     public Good() {
     }
