@@ -12,4 +12,8 @@ public class Constants {
     public static final int UPLOAD_TYPE_GOOD = 2;
     public static final int UPLOAD_TYPE_DISC = 3;
 
+    public static final int GOOD_STATUS_PENDING = 0;
+    public static final int GOOD_STATUS_BORROWED = 1;
+    public static final int GOOD_STATUS_AVAILABLE = 2;
+
 }

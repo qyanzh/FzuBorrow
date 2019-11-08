@@ -21,6 +21,7 @@ import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.seven.fzuborrow.Constants;
 import com.seven.fzuborrow.R;
 import com.seven.fzuborrow.data.Good;
 import com.seven.fzuborrow.data.User;
@@ -36,7 +37,6 @@ import io.reactivex.schedulers.Schedulers;
 public class GoodDetailActivity extends AppCompatActivity {
 
     Good good;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +54,11 @@ public class GoodDetailActivity extends AppCompatActivity {
 
         Button btBorrow = findViewById(R.id.bt_borrow);
         btBorrow.setOnClickListener(v -> showBorrowDialog());
-        //TODO:判断当前用户是否是拥有者，物品是否已经被借出，如果借出了，更换按钮背景颜色
+        //TODO:判断当前用户是否是拥有者
+        if (good.getStatus() == Constants.GOOD_STATUS_BORROWED) {
+            btBorrow.setBackground(getDrawable(R.drawable.corner_button_grey));
+            btBorrow.setText("已借出");
+        }
 
         TextView tvDetail = findViewById(R.id.tv_good_detail);
         tvDetail.setText(good.getDetail());
@@ -118,7 +122,6 @@ public class GoodDetailActivity extends AppCompatActivity {
                 if(!reason.isEmpty()) {
                     Api.get().applyGood(User.getLoggedInUser().getToken(), good.getGid(), good.getUid(), reason,
                             startTime.getTimeInMillis() / 1000, endTime.getTimeInMillis() / 1000)
-                            //TODO:ms or s ?
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(applyResponse -> {
