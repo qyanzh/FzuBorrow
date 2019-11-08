@@ -52,7 +52,7 @@ public class Disc {
     }
 
     public String getImgurl() {
-        return imgurl;
+        return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
     }
 
     public void setImgurl(String imgurl) {

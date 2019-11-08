@@ -1,8 +1,10 @@
 package com.seven.fzuborrow.data;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Good implements Serializable {
+
+public class Good implements Parcelable {
     private long gid;            //物品的id
     private long uid;           //用户的id
     private String location;    //物品的地址？
@@ -20,6 +22,46 @@ public class Good implements Serializable {
         this.name = name;
         this.detail = profile;
     }
+
+    protected Good(Parcel in) {
+        gid = in.readLong();
+        uid = in.readLong();
+        location = in.readString();
+        imgurl = in.readString();
+        status = in.readInt();
+        type = in.readString();
+        name = in.readString();
+        detail = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(gid);
+        dest.writeLong(uid);
+        dest.writeString(location);
+        dest.writeString(imgurl);
+        dest.writeInt(status);
+        dest.writeString(type);
+        dest.writeString(name);
+        dest.writeString(detail);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Good> CREATOR = new Creator<Good>() {
+        @Override
+        public Good createFromParcel(Parcel in) {
+            return new Good(in);
+        }
+
+        @Override
+        public Good[] newArray(int size) {
+            return new Good[size];
+        }
+    };
 
     public long getGid() {
         return gid;
@@ -45,9 +87,12 @@ public class Good implements Serializable {
         this.location = location;
     }
 
+    public boolean hasImage() {
+        return imgurl != null;
+    }
+
     public String getImgurl() {
-       // return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
-        return imgurl;
+        return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
     }
 
     public void setImgurl(String imgurl) {

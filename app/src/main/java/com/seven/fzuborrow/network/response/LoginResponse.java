@@ -1,9 +1,12 @@
 package com.seven.fzuborrow.network.response;
 
+import com.squareup.moshi.Json;
+
 public class LoginResponse {
     private int code;
     private String message;
-    private String data;
+    @Json(name = "data")
+    private String token;
 
     public int getCode() {
         return code;
@@ -21,11 +24,11 @@ public class LoginResponse {
         this.message = message;
     }
 
-    public String getData() {
-        return data;
+    public String getToken() {
+        return token;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setToken(String token) {
+        this.token = token;
     }
 }

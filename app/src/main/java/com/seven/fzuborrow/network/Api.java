@@ -1,5 +1,7 @@
 package com.seven.fzuborrow.network;
 
+import android.util.Log;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -8,23 +10,27 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class Api {
 
-    private Api(){}
+    private Api() {
+    }
 
     private static ApiInterface api;
 
+    private static HttpLoggingInterceptor logging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
+
+    private static OkHttpClient client = new OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .build();
+
+    private static Retrofit retrofit = new Retrofit.Builder()
+            .client(client)
+            .baseUrl("http://49.235.150.59:8080/jiebei/")
+            .addConverterFactory(MoshiConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build();
+
     public static ApiInterface get() {
         if (api == null) {
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor(System.out::println);
-            logging.level(HttpLoggingInterceptor.Level.BODY);
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .addInterceptor(logging)
-                    .build();
-            api = new Retrofit.Builder()
-                    .client(client)
-                    .baseUrl("http://49.235.150.59:8080/jiebei/")
-                    .addConverterFactory(MoshiConverterFactory.create())
-                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .build().create(ApiInterface.class);
+            api = retrofit.create(ApiInterface.class);
         }
         return api;
     }
