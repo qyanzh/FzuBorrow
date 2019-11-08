@@ -1,8 +1,12 @@
 package com.seven.fzuborrow.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.squareup.moshi.Json;
 
-public class Apply {
+public class Apply implements Parcelable {
+    public Apply(){}
     private int rid;
     private int uid;
     private int gid;
@@ -20,9 +24,53 @@ public class Apply {
     private int status;
 
     @Json(name="resp")
-    private int response;
+    private String response;
 
     private int pid;
+
+    protected Apply(Parcel in) {
+        rid = in.readInt();
+        uid = in.readInt();
+        gid = in.readInt();
+        requestTime = in.readLong();
+        startTime = in.readLong();
+        endTime = in.readLong();
+        reason = in.readString();
+        status = in.readInt();
+        response = in.readString();
+        pid = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(rid);
+        dest.writeInt(uid);
+        dest.writeInt(gid);
+        dest.writeLong(requestTime);
+        dest.writeLong(startTime);
+        dest.writeLong(endTime);
+        dest.writeString(reason);
+        dest.writeInt(status);
+        dest.writeString(response);
+        dest.writeInt(pid);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Apply> CREATOR = new Creator<Apply>() {
+        @Override
+        public Apply createFromParcel(Parcel in) {
+            return new Apply(in);
+        }
+
+        @Override
+        public Apply[] newArray(int size) {
+            return new Apply[size];
+        }
+    };
 
     public int getRid() {
         return rid;
@@ -88,11 +136,11 @@ public class Apply {
         this.status = status;
     }
 
-    public int getResponse() {
+    public String getResponse() {
         return response;
     }
 
-    public void setResponse(int response) {
+    public void setResponse(String response) {
         this.response = response;
     }
 

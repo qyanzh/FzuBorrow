@@ -1,5 +1,6 @@
 package com.seven.fzuborrow.ui.notifications;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.seven.fzuborrow.R;
+import com.seven.fzuborrow.ui.notifications.apply.MyApplyActivity;
+import com.seven.fzuborrow.ui.notifications.apply.MyOutActivity;
 
 public class NotificationsFragment extends Fragment {
 
@@ -24,7 +27,14 @@ public class NotificationsFragment extends Fragment {
         notificationsViewModel =
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
-
+        root.findViewById(R.id.bt_my_apply).setOnClickListener(v->{
+            Intent intent = new Intent(getActivity(), MyApplyActivity.class);
+            startActivity(intent);
+        });
+        root.findViewById(R.id.bt_my_out).setOnClickListener(v ->{
+            Intent intent = new Intent(getActivity(), MyOutActivity.class);
+            startActivity(intent);
+        });
         return root;
     }
 
