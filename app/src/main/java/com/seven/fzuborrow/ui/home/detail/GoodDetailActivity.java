@@ -3,11 +3,11 @@ package com.seven.fzuborrow.ui.home.detail;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -97,7 +97,7 @@ public class GoodDetailActivity extends AppCompatActivity {
             TimePickerView timePickerView = new TimePickerBuilder(this, (date, v1) -> {
                 tvStartTime.setText("预约时间: " + f.format(date) + " >");
                 startTime.setTime(date);
-            }).setDate(startTime).isDialog(true).build();
+            }).setType(new boolean[]{true, true, true, true, true, false}).setDate(startTime).isDialog(true).build();
             customPickerView(timePickerView);
             timePickerView.show();
         });
@@ -106,22 +106,28 @@ public class GoodDetailActivity extends AppCompatActivity {
             TimePickerView timePickerView = new TimePickerBuilder(this, (date, v1) -> {
                 tvEndTime.setText("归还时间: " + f.format(date) + " >");
                 endTime.setTime(date);
-            }).setDate(endTime).isDialog(true).build();
+            }).setType(new boolean[]{true, true, true, true, true, false}).setDate(endTime).isDialog(true).build();
             customPickerView(timePickerView);
             timePickerView.show();
         });
 
+        EditText etReason = dialog.findViewById(R.id.et_reason);
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
             if (startTime.getTimeInMillis() < endTime.getTimeInMillis()) {
-                Api.get().applyGood(User.getLoggedInUser().getToken(), good.getGid(), good.getUid(), "测一下",
-                        startTime.getTimeInMillis()/1000 ,endTime.getTimeInMillis()/1000)
-                        //TODO:ms or s ?
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(applyResponse -> {
-                            Toast.makeText(this, applyResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            if(applyResponse.getCode()==200) dialog.dismiss();
-                        });
+                String reason = etReason.getText().toString();
+                if(!reason.isEmpty()) {
+                    Api.get().applyGood(User.getLoggedInUser().getToken(), good.getGid(), good.getUid(), reason,
+                            startTime.getTimeInMillis() / 1000, endTime.getTimeInMillis() / 1000)
+                            //TODO:ms or s ?
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(applyResponse -> {
+                                Toast.makeText(this, applyResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                                if (applyResponse.getCode() == 200) dialog.dismiss();
+                            });
+                } else {
+                    Toast.makeText(this, "请填写申请信息", Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(this, "归还时间需大于预约时间", Toast.LENGTH_SHORT).show();
             }

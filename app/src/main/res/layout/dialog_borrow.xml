@@ -26,11 +26,23 @@
         android:gravity="center"
         tools:text="归还时间：2019-01-02 12:00 >" />
 
-    <TextView
-        android:layout_marginTop="40dp"
+    <View
+        android:layout_marginTop="20dp"
+        android:background="#f2f2f2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="同意出借人的条款，\n确认借用吗?" />
-
+        android:layout_height="2dp"/>
+    <EditText
+        android:id="@+id/et_reason"
+        android:background="@null"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:gravity="top"
+        android:hint="请输入申请理由"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"/>
+    <View
+        android:background="#f2f2f2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
 </LinearLayout>
