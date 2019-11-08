@@ -1,6 +1,8 @@
 package com.seven.fzuborrow.data;
 
-public class Good {
+import java.io.Serializable;
+
+public class Good implements Serializable {
     private long gid;            //物品的id
     private long uid;           //用户的id
     private String location;    //物品的地址？
@@ -44,7 +46,8 @@ public class Good {
     }
 
     public String getImgurl() {
-        return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
+       // return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
+        return imgurl;
     }
 
     public void setImgurl(String imgurl) {
