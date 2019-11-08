@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.notifications.apply.MyOutActivity"></activity>
+        <activity android:name=".ui.home.search.GoodSearchActivity"></activity>
+        <activity android:name=".ui.notifications.apply.MyOutActivity" />
         <activity android:name=".ui.notifications.apply.MyApplyActivity" />
         <activity android:name=".ui.community.publish.PublishDiscussActivity" />
         <activity android:name=".ui.mine.MyBorrowDetail" />

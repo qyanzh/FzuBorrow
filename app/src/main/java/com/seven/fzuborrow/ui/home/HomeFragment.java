@@ -15,10 +15,8 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.seven.fzuborrow.Constants;
 import com.seven.fzuborrow.R;
-import com.seven.fzuborrow.data.Good;
 import com.seven.fzuborrow.ui.home.detail.GoodDetailActivity;
-
-import java.util.Random;
+import com.seven.fzuborrow.ui.home.search.GoodSearchActivity;
 
 public class HomeFragment extends Fragment {
 
@@ -63,7 +61,8 @@ public class HomeFragment extends Fragment {
             }
         });
         root.findViewById(R.id.search_bar).setOnClickListener(v->{
-
+            Intent intent = new Intent(getActivity(), GoodSearchActivity.class);
+            startActivity(intent);
         });
         subscribeUi();
         return root;
