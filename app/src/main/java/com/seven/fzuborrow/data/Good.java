@@ -92,7 +92,8 @@ public class Good implements Parcelable {
     }
 
     public String getImgurl() {
-        return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
+       return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
+       // return  imgurl;  如果要运行的我部分，这里是需要改成 备注部分，因为我还没和API对接
     }
 
     public void setImgurl(String imgurl) {

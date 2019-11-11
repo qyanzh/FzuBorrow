@@ -23,7 +23,7 @@ public class MyBorrowDetail extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("借呗");
         //为了得到对象
-         data =(Good) getIntent().getSerializableExtra("data");
+         data =getIntent().getParcelableExtra("data");;
          initData();//负责将数据填入该有的栏里面
 
 

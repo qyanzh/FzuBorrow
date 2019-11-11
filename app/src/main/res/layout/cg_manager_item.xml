@@ -6,10 +6,11 @@
         android:id="@+id/recycler_view_linearLayout"
         android:background="#FFFFFF"
         android:orientation="vertical"
-        android:layout_marginTop="18dp"
-        android:layout_marginLeft="12dp"
-        android:layout_width="383dp"
-        android:layout_height="177dp">
+
+        android:padding="18dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="210dp">
         <LinearLayout
             android:id="@+id/manager_item_dianji"
             android:orientation="horizontal"

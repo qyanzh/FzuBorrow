@@ -17,13 +17,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.seven.fzuborrow.R;
 import com.seven.fzuborrow.data.Good;
-import com.seven.fzuborrow.ui.community.TieziAdapter;
+import com.seven.fzuborrow.ui.home.detail.GoodDetailActivity;
+
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -78,10 +81,22 @@ public class ManagerAdapter extends RecyclerView.Adapter<ManagerAdapter.ViewHold
                 //打算的是，点击之后，把信息传给下个activity。就不要再让下个activity再去申请了。
             }
         });
-
+        holder.phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showBorrowDialog();
+            }
+        });
         return holder;
     }
-
+    private void showBorrowDialog() {
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
+                .setView(R.layout.cg_dialog_phone)
+                .setPositiveButton("拨打", null)
+                .setNegativeButton("取消", null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
     @Override
     public void onBindViewHolder(@NonNull ManagerAdapter.ViewHolder holder, int position) {
          data = list.get(position);

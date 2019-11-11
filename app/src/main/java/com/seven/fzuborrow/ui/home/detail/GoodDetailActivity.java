@@ -80,7 +80,7 @@ public class GoodDetailActivity extends AppCompatActivity {
     private void showBorrowDialog() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                 .setView(R.layout.dialog_borrow)
-                .setPositiveButton("借用", null)
+                .setPositiveButton("拨打", null)
                 .setNegativeButton("取消", null);
         AlertDialog dialog = builder.create();
         dialog.show();
