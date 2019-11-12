@@ -84,15 +84,30 @@ public class ManagerAdapter extends RecyclerView.Adapter<ManagerAdapter.ViewHold
         holder.phone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showBorrowDialog();
+                showPhoneDialog();
+            }
+        });
+        holder.pingjia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showEvaluationDialog();
             }
         });
         return holder;
     }
-    private void showBorrowDialog() {
+    private void showPhoneDialog() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
                 .setView(R.layout.cg_dialog_phone)
                 .setPositiveButton("拨打", null)
+                .setNegativeButton("取消", null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void showEvaluationDialog(){
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
+                .setView(R.layout.cg_dialog_evaluation)
+                .setPositiveButton("提交", null)
                 .setNegativeButton("取消", null);
         AlertDialog dialog = builder.create();
         dialog.show();
