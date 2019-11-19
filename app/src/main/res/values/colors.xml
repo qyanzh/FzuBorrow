@@ -3,4 +3,13 @@
     <color name="colorPrimary">#FAE160</color>
     <color name="colorPrimaryDark">#FAE160</color>
     <color name="colorAccent">#FAE160</color>
+
+    <color name="lightskyblue">#87cefa</color><!--亮天蓝色 -->
+    <color name="orangered">#ff4500</color><!--红橙色 -->
+
+    <color name="lemonchiffon">#fffacd</color><!--柠檬绸色 -->
+    <color name="green">#008000</color><!--绿色 -->
+
+    <color name="teal">#FFFFFF</color><!--水鸭色 -->
+    <color name="turquoise">#40e0d0</color><!--青绿色 -->
 </resources>
