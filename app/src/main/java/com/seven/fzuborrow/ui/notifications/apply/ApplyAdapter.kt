@@ -3,15 +3,23 @@ package com.seven.fzuborrow.ui.notifications.apply
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.collection.LongSparseArray
+import androidx.collection.SparseArrayCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.seven.fzuborrow.R
 import com.seven.fzuborrow.data.Apply
+import com.seven.fzuborrow.data.User
+import com.seven.fzuborrow.network.Api
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.apply_item.view.*
 
 class ApplyAdapter(val listener:ApplyListener) :
     ListAdapter<Apply, RecyclerView.ViewHolder>(ApplyDiffCallback()) {
+    val map = SparseArrayCompat<User>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return ViewHolder(
             LayoutInflater.from(parent.context)!!.inflate(
@@ -25,13 +33,27 @@ class ApplyAdapter(val listener:ApplyListener) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val apply = getItem(position)
         holder.itemView.apply {
-            tv_username.text = apply.uid.toString()
+            if (map.containsKey(apply.uid)) {
+                val user = map[apply.uid]
+                tv_username.text = user?.username
+                Glide.with(this).load(user?.imgurl)
+            } else {
+                //TODO:查询用户
+                Api.get().findUser(User.getLoggedInUser().token).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        map.put(apply.uid,it.user)
+                        val user = map[apply.uid]
+                        tv_username.text = user?.username
+                        Glide.with(this).load(user?.imgurl)
+                    }
+            }
             tv_message.text = apply.reason
             bt_more.apply {
                 setOnClickListener {
                     listener.onClick(apply)
                 }
-                bt_more.text = apply.status.toString()
+                bt_more.text = "查看详情 >"
             }
         }
     }

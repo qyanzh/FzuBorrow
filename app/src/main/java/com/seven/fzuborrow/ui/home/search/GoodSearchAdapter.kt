@@ -27,7 +27,9 @@ class GoodSearchAdapter(val listener: GoodListener) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val good = getItem(position)
         holder.itemView.apply {
-            Glide.with(this).load(good.imgurl).into(iv_image)
+            if(good.imgurl!=null) {
+                Glide.with(this).load(good.imgurl).into(iv_image)
+            }
             tv_good_name.text = good.name
             tv_good_status.text = when (good.status) {
                 Constants.GOOD_STATUS_AVAILABLE -> "空闲中"

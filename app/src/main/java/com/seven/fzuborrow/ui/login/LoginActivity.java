@@ -16,8 +16,12 @@ import com.seven.fzuborrow.MainActivity;
 import com.seven.fzuborrow.R;
 import com.seven.fzuborrow.data.User;
 import com.seven.fzuborrow.network.Api;
+import com.seven.fzuborrow.network.response.FindUserResponse;
+import com.seven.fzuborrow.network.response.LoginResponse;
 
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity {
@@ -47,16 +51,19 @@ public class LoginActivity extends AppCompatActivity {
             username = "zqy";
             password = "12345";
         }
-        String finalUsername = username;
+        final User user = new User();
+        // 作变换，即作嵌套网络请求
         Api.get().login(username, password)
                 .subscribeOn(Schedulers.io())
+                .doOnNext(loginResponse -> user.setToken(loginResponse.getToken()))
+                .flatMap((Function<LoginResponse, ObservableSource<FindUserResponse>>) loginResponse -> Api.get().findUser(user.getToken()))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(loginResponse -> {
-                    Toast.makeText(this, loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                    if (loginResponse.getCode() == 200) {
-                        User user = new User();
-                        user.setToken(loginResponse.getToken());
-                        User.setLoggedInUser(user);
+                .subscribe(findUserResponse -> {
+                    Toast.makeText(this, findUserResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    if (findUserResponse.getCode() == 200) {
+                        User currentUser = findUserResponse.getUser();
+                        currentUser.setToken(user.getToken());
+                        User.setLoggedInUser(currentUser);
                         Intent intent = new Intent(this, MainActivity.class);
                         startActivity(intent);
                         finish();

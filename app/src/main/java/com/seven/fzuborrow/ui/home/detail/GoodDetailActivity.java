@@ -48,9 +48,7 @@ public class GoodDetailActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(good.getName());
 
         ImageView ivGood = findViewById(R.id.iv_image);
-        if (good.hasImage()) {
-            Glide.with(this).load(good.getImgurl()).into(ivGood);
-        }
+        Glide.with(this).load(good.getImgurl()).into(ivGood);
 
         Button btBorrow = findViewById(R.id.bt_borrow);
         btBorrow.setOnClickListener(v -> showBorrowDialog());
@@ -119,7 +117,7 @@ public class GoodDetailActivity extends AppCompatActivity {
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(v -> {
             if (startTime.getTimeInMillis() < endTime.getTimeInMillis()) {
                 String reason = etReason.getText().toString();
-                if(!reason.isEmpty()) {
+                if (!reason.isEmpty()) {
                     Api.get().applyGood(User.getLoggedInUser().getToken(), good.getGid(), good.getUid(), reason,
                             startTime.getTimeInMillis() / 1000, endTime.getTimeInMillis() / 1000)
                             .subscribeOn(Schedulers.io())

@@ -57,7 +57,6 @@ public interface ApiInterface {
     );//更新用户资料，包括用户名密码住址
 
     @POST("user/findUser")
-    @FormUrlEncoded
     Observable<FindUserResponse> findUser(
             @Header("XW-Token") String token
     );//查询当前用户资料 TODO:查询其他用户

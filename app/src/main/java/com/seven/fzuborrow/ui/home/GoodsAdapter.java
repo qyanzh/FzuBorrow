@@ -33,7 +33,7 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
 
     @Override
     public void submitList(@Nullable List<Good> list) {
-        submitList(list,null);
+        submitList(list, null);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
         goods.add(header);
         goods.addAll(list);
         goods.add(footer);
-        super.submitList(goods,commitCallback);
+        super.submitList(goods, commitCallback);
     }
 
     GoodsAdapter(GoodClickListener listener) {
@@ -96,19 +96,16 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
         if (holder instanceof ItemViewHolder) {
             Good good = getItem(position);
             holder.itemView.setOnClickListener(v -> listener.onClick(good));
-            Log.d(TAG, "onBindViewHolder: "+good.getName());
+            Log.d(TAG, "onBindViewHolder: " + good.getName());
             ((ItemViewHolder) holder).name.setText(good.getName());
             ((ItemViewHolder) holder).profile.setText(good.getDetail());
-            if(good.hasImage()) {
-                Glide.with(holder.itemView).load(good.getImgurl()).into( ((ItemViewHolder) holder).image);
-            } else {
-                Glide.with(holder.itemView).load(R.drawable.banner_placeholder).into( ((ItemViewHolder) holder).image);
-            }
+            Glide.with(holder.itemView).load(good.getImgurl()).into(((ItemViewHolder) holder).image);
+            Glide.with(holder.itemView).load(R.drawable.banner_placeholder).into(((ItemViewHolder) holder).image);
         } else if (holder instanceof HeaderViewHolder) {
             ((HeaderViewHolder) holder).tabLayout.setOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
-                    if(tabListener!=null) {
+                    if (tabListener != null) {
                         String type = tab.getText().toString();
                         tabListener.onTabClick(type);
                     }
@@ -146,6 +143,7 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
     static class HeaderViewHolder extends RecyclerView.ViewHolder {
 
         TabLayout tabLayout;
+
         HeaderViewHolder(@NonNull View itemView) {
             super(itemView);
             tabLayout = itemView.findViewById(R.id.tab_layout);

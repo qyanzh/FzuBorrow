@@ -50,12 +50,12 @@ public class DiscAdapter extends ListAdapter<Disc, DiscAdapter.ViewHolder> {
         Disc disc = getItem(position);
         holder.tvUsername.setText(disc.getUsername());
         Glide.with(holder.itemView).load(disc.getUseravatar()).into(holder.ivUserAvatar);
-        holder.tvPublishTime.setText(f.format(disc.getCtime()*1000L));
+        holder.tvPublishTime.setText(f.format(disc.getCtime() * 1000L));
         holder.tvDetail.setText(disc.getTitle());
         Glide.with(holder.itemView).load(disc.getImgurl()).into(holder.ivImage);
-        holder.tvComments.setText(disc.getCounts()+"");
-        holder.tvLikes.setText(disc.getLikes()+"");
-        holder.itemView.setOnClickListener(v->{
+        holder.tvComments.setText(disc.getCounts() + "");
+        holder.tvLikes.setText(disc.getLikes() + "");
+        holder.itemView.setOnClickListener(v -> {
             listener.onClick(disc);
         });
     }
@@ -68,6 +68,7 @@ public class DiscAdapter extends ListAdapter<Disc, DiscAdapter.ViewHolder> {
         ImageView ivImage;
         TextView tvComments;
         TextView tvLikes;
+
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             ivUserAvatar = itemView.findViewById(R.id.iv_user_image);

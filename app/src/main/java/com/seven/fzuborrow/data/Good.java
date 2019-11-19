@@ -87,13 +87,17 @@ public class Good implements Parcelable {
         this.location = location;
     }
 
-    public boolean hasImage() {
-        return imgurl != null;
-    }
-
+    //TODO 对接完成后修改
     public String getImgurl() {
-       //return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
-        return  imgurl;  //如果要运行的我部分，这里是需要改成 备注部分，因为我还没和API对接
+        if(imgurl!=null) {
+            if(imgurl.startsWith("http")) {
+                return imgurl;
+            } else {
+                return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
+            }
+        } else {
+            return null;
+        }
     }
 
     public void setImgurl(String imgurl) {

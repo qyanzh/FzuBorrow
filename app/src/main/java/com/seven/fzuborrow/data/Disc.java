@@ -52,7 +52,11 @@ public class Disc {
     }
 
     public String getImgurl() {
-        return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
+        if (imgurl != null) {
+            return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
+        } else {
+            return null;
+        }
     }
 
     public void setImgurl(String imgurl) {
@@ -68,7 +72,11 @@ public class Disc {
     }
 
     public String getUseravatar() {
-        return useravatar;
+        if(useravatar!=null) {
+            return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
+        } else {
+            return null;
+        }
     }
 
     public void setUseravatar(String useravatar) {

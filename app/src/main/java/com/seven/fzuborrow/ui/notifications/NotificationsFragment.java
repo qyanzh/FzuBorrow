@@ -6,17 +6,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.seven.fzuborrow.R;
-import com.seven.fzuborrow.ui.notifications.apply.MyApplyActivity;
-import com.seven.fzuborrow.ui.notifications.apply.MyOutActivity;
+import com.seven.fzuborrow.ui.notifications.apply.ApplyHistoryActivity;
 
 public class NotificationsFragment extends Fragment {
 
@@ -28,11 +24,11 @@ public class NotificationsFragment extends Fragment {
                 ViewModelProviders.of(this).get(NotificationsViewModel.class);
         View root = inflater.inflate(R.layout.fragment_notifications, container, false);
         root.findViewById(R.id.bt_my_apply).setOnClickListener(v->{
-            Intent intent = new Intent(getActivity(), MyApplyActivity.class);
+            Intent intent = new Intent(getActivity(), ApplyHistoryActivity.class).putExtra("mode","my_apply");
             startActivity(intent);
         });
         root.findViewById(R.id.bt_my_out).setOnClickListener(v ->{
-            Intent intent = new Intent(getActivity(), MyOutActivity.class);
+            Intent intent = new Intent(getActivity(), ApplyHistoryActivity.class).putExtra("mode","my_out");
             startActivity(intent);
         });
         return root;

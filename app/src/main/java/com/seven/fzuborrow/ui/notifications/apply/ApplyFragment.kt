@@ -40,11 +40,7 @@ class ApplyFragment : Fragment() {
             Toast.makeText(context, apply.rid.toString(), Toast.LENGTH_SHORT).show()
         })
 
-        Api.get().findBeApply(User.getLoggedInUser().token).subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
-                (recyclerView.adapter as ApplyAdapter).submitList(it.applyList)
-            }
+        (recyclerView.adapter as ApplyAdapter).submitList(arguments!!["applies"] as List<Apply>)
 
         // Inflate the layout for this fragment
         return recyclerView
