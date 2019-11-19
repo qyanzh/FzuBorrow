@@ -16,12 +16,8 @@ import com.seven.fzuborrow.MainActivity;
 import com.seven.fzuborrow.R;
 import com.seven.fzuborrow.data.User;
 import com.seven.fzuborrow.network.Api;
-import com.seven.fzuborrow.network.response.FindUserResponse;
-import com.seven.fzuborrow.network.response.LoginResponse;
 
-import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 public class LoginActivity extends AppCompatActivity {
@@ -47,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         String username = mAccountNumber.getText().toString();
         String password = mPassword.getText().toString();
         //TODO:自动登录
-        if(username.isEmpty()||password.isEmpty()) {
+        if (username.isEmpty() || password.isEmpty()) {
             username = "zqy";
             password = "12345";
         }
@@ -56,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         Api.get().login(username, password)
                 .subscribeOn(Schedulers.io())
                 .doOnNext(loginResponse -> user.setToken(loginResponse.getToken()))
-                .flatMap((Function<LoginResponse, ObservableSource<FindUserResponse>>) loginResponse -> Api.get().findUser(user.getToken()))
+                .flatMap(loginResponse -> Api.get().findUser(user.getToken()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(findUserResponse -> {
                     Toast.makeText(this, findUserResponse.getMessage(), Toast.LENGTH_SHORT).show();
@@ -68,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     }
-                });
+                },e-> Toast.makeText(this, "网络连接异常", Toast.LENGTH_SHORT).show());
     }
 
     @SuppressLint("CheckResult")
@@ -99,7 +95,8 @@ public class LoginActivity extends AppCompatActivity {
             Api.get().register(username, password, studentNumber, studentPassword, "")
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(registerResponse -> Toast.makeText(this, registerResponse.getMessage(), Toast.LENGTH_SHORT).show());
+                    .subscribe(registerResponse -> Toast.makeText(this, registerResponse.getMessage(), Toast.LENGTH_SHORT).show()
+                            ,e-> Toast.makeText(this, "网络连接异常", Toast.LENGTH_SHORT).show());
         });
         alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(v -> {
             alertDialog.dismiss();

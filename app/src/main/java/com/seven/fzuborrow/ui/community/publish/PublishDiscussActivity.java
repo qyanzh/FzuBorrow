@@ -7,6 +7,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.seven.fzuborrow.Constants;
 import com.seven.fzuborrow.R;
-import com.seven.fzuborrow.data.Disc;
 import com.seven.fzuborrow.data.User;
 import com.seven.fzuborrow.network.Api;
 import com.seven.fzuborrow.utils.ImageUtilKt;
@@ -58,16 +58,18 @@ public class PublishDiscussActivity extends AppCompatActivity {
         findViewById(R.id.bt_back).setOnClickListener(v -> onBackPressed());
         findViewById(R.id.bt_publish).setOnClickListener(v -> {
             String content = etContent.getText().toString();
-            if(imagePath!=null) {
+            if (imagePath != null) {
                 File file = new File(imagePath);
                 RequestBody fileBody = RequestBody.create(file, MediaType.parse("image/png"));
                 MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), fileBody);
                 Api.get().uploadFile(User.getLoggedInUser().getToken(), filePart, Constants.UPLOAD_TYPE_DISC)
                         .subscribeOn(Schedulers.io())
+                        .flatMap(uploadFileResponse -> Api.get().createDisc(User.getLoggedInUser().getToken(), content, User.getLoggedInUser().getUsername()))
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(uploadFileResponse -> {
-                            //TODO:发帖
-                        });
+                        .subscribe(createDiscResponse -> {
+                            Toast.makeText(this, createDiscResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+                        },e-> Toast.makeText(this, "网络连接异常", Toast.LENGTH_SHORT).show());
             }
         });
     }

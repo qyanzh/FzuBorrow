@@ -3,6 +3,7 @@ package com.seven.fzuborrow.ui.notifications.apply
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.collection.LongSparseArray
 import androidx.collection.SparseArrayCompat
 import androidx.recyclerview.widget.DiffUtil
@@ -41,12 +42,12 @@ class ApplyAdapter(val listener:ApplyListener) :
                 //TODO:查询用户
                 Api.get().findUser(User.getLoggedInUser().token).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
+                    .subscribe ({
                         map.put(apply.uid,it.user)
                         val user = map[apply.uid]
                         tv_username.text = user?.username
                         Glide.with(this).load(user?.imgurl)
-                    }
+                    },{ Toast.makeText(this.context, "网络连接异常", Toast.LENGTH_SHORT).show()})
             }
             tv_message.text = apply.reason
             bt_more.apply {

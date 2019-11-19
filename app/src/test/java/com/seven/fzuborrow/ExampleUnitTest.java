@@ -30,16 +30,6 @@ public class ExampleUnitTest {
     @Test
     public void registerTest() throws IOException {
 
-        Api.get().login("zqy", "12345")
-                .flatMap(new Function<LoginResponse, ObservableSource<?>>() {
-                    @Override
-                    public ObservableSource<?> apply(LoginResponse loginResponse) throws Exception {
-                        File file = new File(getClass().getResource("/ic_phone.png").toURI());
-                        RequestBody fileBody = RequestBody.create(file, MediaType.parse("image/png"));
-                        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), fileBody);
-                        return Api.get().uploadFile(loginResponse.getToken(), filePart, 1);
-                    }
-                }).subscribe();
 
     }
 }

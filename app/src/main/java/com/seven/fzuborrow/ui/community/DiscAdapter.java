@@ -1,10 +1,12 @@
 package com.seven.fzuborrow.ui.community;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -14,9 +16,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.seven.fzuborrow.R;
 import com.seven.fzuborrow.data.Disc;
+import com.seven.fzuborrow.data.User;
+import com.seven.fzuborrow.network.Api;
 
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class DiscAdapter extends ListAdapter<Disc, DiscAdapter.ViewHolder> {
 
@@ -45,6 +52,7 @@ public class DiscAdapter extends ListAdapter<Disc, DiscAdapter.ViewHolder> {
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.disc_item, parent, false));
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Disc disc = getItem(position);
@@ -55,9 +63,14 @@ public class DiscAdapter extends ListAdapter<Disc, DiscAdapter.ViewHolder> {
         Glide.with(holder.itemView).load(disc.getImgurl()).into(holder.ivImage);
         holder.tvComments.setText(disc.getCounts() + "");
         holder.tvLikes.setText(disc.getLikes() + "");
-        holder.itemView.setOnClickListener(v -> {
-            listener.onClick(disc);
-        });
+        holder.tvLikes.setOnClickListener(v -> Api.get().addDiscLikes(User.getLoggedInUser().getToken(), disc.getDid())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(addLikesResponse -> {
+                    disc.setLikes(disc.getLikes() + 1);
+                    holder.tvLikes.setText(disc.getLikes() + "");
+                },e-> Toast.makeText(holder.itemView.getContext(), "网络连接异常", Toast.LENGTH_SHORT).show()));
+        holder.itemView.setOnClickListener(v -> listener.onClick(disc));
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -78,7 +91,6 @@ public class DiscAdapter extends ListAdapter<Disc, DiscAdapter.ViewHolder> {
             ivImage = itemView.findViewById(R.id.iv_image);
             tvComments = itemView.findViewById(R.id.tv_comment_count);
             tvLikes = itemView.findViewById(R.id.tv_like_count);
-
         }
     }
 

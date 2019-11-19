@@ -3,6 +3,7 @@ package com.seven.fzuborrow.ui.notifications.apply
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
@@ -34,10 +35,9 @@ class ApplyHistoryActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        observable
-            .subscribeOn(Schedulers.io())
+        observable.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe {
+            .subscribe({
                 val fragmentList = listOf(
                     ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_PENDDING } as ArrayList<Apply>),
                     ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_USING } as ArrayList<Apply>),
@@ -67,7 +67,7 @@ class ApplyHistoryActivity : AppCompatActivity() {
                 }
                 view_pager.offscreenPageLimit = 2
                 tab_layout.setupWithViewPager(view_pager)
-            }
+            }, { Toast.makeText(this, "网络连接异常", Toast.LENGTH_SHORT).show() })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

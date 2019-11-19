@@ -125,7 +125,7 @@ public class GoodDetailActivity extends AppCompatActivity {
                             .subscribe(applyResponse -> {
                                 Toast.makeText(this, applyResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                 if (applyResponse.getCode() == 200) dialog.dismiss();
-                            });
+                            },e-> Toast.makeText(this, "网络连接异常", Toast.LENGTH_SHORT).show());
                 } else {
                     Toast.makeText(this, "请填写申请信息", Toast.LENGTH_SHORT).show();
                 }

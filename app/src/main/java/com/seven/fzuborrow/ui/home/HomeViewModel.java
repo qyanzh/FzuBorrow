@@ -1,8 +1,12 @@
 package com.seven.fzuborrow.ui.home;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -17,7 +21,7 @@ import java.util.List;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public class HomeViewModel extends ViewModel {
+public class HomeViewModel extends AndroidViewModel {
 
     private MutableLiveData<List<Good>> mGoods = new MutableLiveData<>();
 
@@ -26,6 +30,11 @@ public class HomeViewModel extends ViewModel {
     }
 
     private static final String TAG = "HomeViewModel";
+
+    public HomeViewModel(@NonNull Application application) {
+        super(application);
+    }
+
     @SuppressLint("CheckResult")
     public void getGoodsFromServer(String type) {
         Api.get().findAllGood(User.getLoggedInUser().getToken(), type, "")
@@ -36,7 +45,7 @@ public class HomeViewModel extends ViewModel {
                         Log.d(TAG, "getGoodsFromServer: "+good.getName());
                     }
                     mGoods.setValue(findAllGoodsResponse.getGoodList());
-                });
+                },e-> Toast.makeText(getApplication(), "网络连接异常", Toast.LENGTH_SHORT).show());
     }
 
     public LiveData<List<Good>> getGoods() {

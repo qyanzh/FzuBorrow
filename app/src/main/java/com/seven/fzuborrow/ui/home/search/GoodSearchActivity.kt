@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayout
 import com.seven.fzuborrow.R
@@ -75,9 +76,9 @@ class GoodSearchActivity : AppCompatActivity() {
             Api.get().findAllGood(User.getLoggedInUser().token, type, query.toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
+                .subscribe({
                     adapter.submitList(it.goodList)
-                }
+                }, { Toast.makeText(this, "网络连接异常", Toast.LENGTH_SHORT).show() })
         }
     }
 }
