@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.mine.MyCreditActivity">
-    <com.seven.fzuborrow.ui.mine.DashboardView3
-        android:id="@+id/dashboard_view_3"
+
+    <com.seven.fzuborrow.ui.mine.DashboardView2
+        android:id="@+id/dashboard_view_2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"
-         />
+        android:layout_height="wrap_content"
+        />
 </LinearLayout>

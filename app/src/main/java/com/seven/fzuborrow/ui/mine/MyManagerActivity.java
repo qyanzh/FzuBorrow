@@ -34,7 +34,7 @@ public class MyManagerActivity extends AppCompatActivity {
         setContentView(R.layout.cg_activity_my_manager);
         setSupportActionBar(findViewById(R.id.manager_toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("我的");
+        getSupportActionBar().setTitle("");
         RecyclerView recyclerView =(RecyclerView) findViewById(R.id.manage_recyclerview);
         list = new ArrayList<>();
 
