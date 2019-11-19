@@ -5,7 +5,7 @@ import com.squareup.moshi.Json;
 
 import java.util.List;
 
-public class FindBeApplyResponse {
+public class FindApplyResponse {
     private int code;
     private String message;
     @Json(name = "data")

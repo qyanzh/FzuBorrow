@@ -20,7 +20,7 @@ public class CommunityViewModel extends ViewModel {
     private MutableLiveData<List<Disc>> discs = new MutableLiveData<>();;
 
      {
-        Api.get().findAllDisc(User.getLoggedInUser().getToken()).subscribeOn(Schedulers.io())
+        Api.get().findAllDisc(User.getLoggedInUser().getToken(),"").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(findAllDiscResponse -> discs.setValue(findAllDiscResponse.getDiscList()));
     }

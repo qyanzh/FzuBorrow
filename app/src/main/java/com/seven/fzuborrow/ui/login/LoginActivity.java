@@ -56,7 +56,6 @@ public class LoginActivity extends AppCompatActivity {
                     if (loginResponse.getCode() == 200) {
                         User user = new User();
                         user.setToken(loginResponse.getToken());
-                        user.setDisplayName(finalUsername);
                         User.setLoggedInUser(user);
                         Intent intent = new Intent(this, MainActivity.class);
                         startActivity(intent);
