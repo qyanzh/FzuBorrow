@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@color/colorPrimary" />
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="20dp">
+        <ImageView
+            android:layout_marginLeft="50dp"
+            android:src="@drawable/cgh_detail_lianxiren"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+        <TextView
+            android:text="姓名 ：陈喀喀喀"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:paddingStart="70dp"
+        android:text="学号 ： 031702599"
+        android:textSize="18sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="20dp">
+        <ImageView
+            android:layout_marginLeft="50dp"
+            android:src="@drawable/cg_detail_phone"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+        <TextView
+            android:text="联系方式： 15369512345"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+</LinearLayout>
