@@ -64,6 +64,9 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getActivity(), GoodSearchActivity.class);
             startActivity(intent);
         });
+        root.findViewById(R.id.bt_add_good).setOnClickListener(v->{
+            //TODO:添加物品
+        });
         subscribeUi();
         return root;
     }
