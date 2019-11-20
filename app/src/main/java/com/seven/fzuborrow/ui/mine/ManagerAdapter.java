@@ -38,23 +38,22 @@ public class ManagerAdapter extends RecyclerView.Adapter<ManagerAdapter.ViewHold
     Good data;
     static class ViewHolder extends RecyclerView.ViewHolder{
         View goodView;
-        LinearLayout linearLayout;
-        LinearLayout linearLayout1;
+        View linearLayout;
+        View linearLayout1;
         ImageView icon;
         ImageView status_icon;
         TextView name;
         TextView status;
-        LinearLayout pingjia;
-        LinearLayout phone;
+        View pingjia;
+        View phone;
         public ViewHolder(View view){
             super(view);
             goodView = view;
             status_icon =view.findViewById(R.id.manager_item_status_icon);
-            linearLayout = (LinearLayout) view.findViewById(R.id.recycler_view_linearLayout);
-            linearLayout1 = (LinearLayout) view.findViewById(R.id.manager_item_dianji);
-            icon = (ImageView) view.findViewById(R.id.manager_item_icon);
-            name = (TextView) view.findViewById(R.id.manager_item_name);
-            status = (TextView) view.findViewById(R.id.manager_item_status);
+            linearLayout = view.findViewById(R.id.recycler_view_linearLayout);
+            icon = view.findViewById(R.id.manager_item_icon);
+            name = view.findViewById(R.id.manager_item_name);
+            status = view.findViewById(R.id.manager_item_status);
             pingjia = view.findViewById(R.id.manager_item_pingjia);
             phone = view.findViewById(R.id.manager_item_phone);
         }
