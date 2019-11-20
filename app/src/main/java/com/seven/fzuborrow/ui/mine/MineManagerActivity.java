@@ -16,7 +16,7 @@ import com.seven.fzuborrow.data.Good;
 import java.util.ArrayList;
 import java.util.List;
 //     我管理的
-public class MineBorrowActivity extends AppCompatActivity {
+public class MineManagerActivity extends AppCompatActivity {
     private ManagerAdapter adapter;
     private List<Good> list;
     ImageView back;
@@ -24,7 +24,7 @@ public class MineBorrowActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.cg_activity_mine_borrow);
+        setContentView(R.layout.cg_activity_mine_manager);
         setSupportActionBar(findViewById(R.id.manager_toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");

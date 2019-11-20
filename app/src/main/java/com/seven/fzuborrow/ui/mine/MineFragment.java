@@ -32,11 +32,11 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         Intent intent ;
         switch (v.getId()){
             case R.id.Li_mine_borrow:
-                intent = new Intent(getContext(),MyManagerActivity.class);
+                intent = new Intent(getContext(), MyBorrowActivity.class);
                 getContext().startActivity(intent);
                 break;
             case R.id.Li_mine_manager:
-                intent = new Intent(getContext(),MineBorrowActivity.class);
+                intent = new Intent(getContext(), MineManagerActivity.class);
                 getContext().startActivity(intent);
                 break;
             case R.id.Li_mine_credit:
