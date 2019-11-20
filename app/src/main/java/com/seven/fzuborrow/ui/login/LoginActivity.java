@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         Api.get().login(username, password)
                 .subscribeOn(Schedulers.io())
                 .doOnNext(loginResponse -> user.setToken(loginResponse.getToken()))
-                .flatMap(loginResponse -> Api.get().findUser(user.getToken()))
+                .flatMap(loginResponse -> Api.get().findUser(user.getToken(),user.getUid()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(findUserResponse -> {
                     Toast.makeText(this, findUserResponse.getMessage(), Toast.LENGTH_SHORT).show();

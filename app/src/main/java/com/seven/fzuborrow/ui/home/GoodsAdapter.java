@@ -66,7 +66,7 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
         this.listener = listener;
     }
 
-    private static final String TAG = "GoodsAdater";
+    private static final String TAG = "GoodsAdapter";
 
     @NonNull
     @Override
@@ -99,8 +99,11 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
             Log.d(TAG, "onBindViewHolder: " + good.getName());
             ((ItemViewHolder) holder).name.setText(good.getName());
             ((ItemViewHolder) holder).profile.setText(good.getDetail());
-            Glide.with(holder.itemView).load(good.getImgurl()).into(((ItemViewHolder) holder).image);
-            Glide.with(holder.itemView).load(R.drawable.banner_placeholder).into(((ItemViewHolder) holder).image);
+            if(good.getImgurl()!=null) {
+                Glide.with(holder.itemView).load(good.getImgurl()).into(((ItemViewHolder) holder).image);
+            } else {
+                Glide.with(holder.itemView).load(R.drawable.banner_placeholder).into(((ItemViewHolder) holder).image);
+            }
         } else if (holder instanceof HeaderViewHolder) {
             ((HeaderViewHolder) holder).tabLayout.setOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
                 @Override

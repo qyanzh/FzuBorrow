@@ -40,7 +40,7 @@ class ApplyAdapter(val listener:ApplyListener) :
                 Glide.with(this).load(user?.imgurl)
             } else {
                 //TODO:查询用户
-                Api.get().findUser(User.getLoggedInUser().token).subscribeOn(Schedulers.io())
+                Api.get().findUser(User.getLoggedInUser().token,apply.uid.toLong()).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe ({
                         map.put(apply.uid,it.user)

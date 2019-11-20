@@ -13,9 +13,9 @@
 
         <ImageView
             android:id="@+id/good_image"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             android:src="@drawable/banner_placeholder"
-            android:layout_width="200dp"
+            android:layout_width="220dp"
             android:adjustViewBounds="true"
             android:layout_height="wrap_content" />
         <TextView

@@ -1,5 +1,6 @@
 package com.seven.fzuborrow;
 
+import com.seven.fzuborrow.data.User;
 import com.seven.fzuborrow.network.Api;
 import com.seven.fzuborrow.network.response.LoginResponse;
 
@@ -29,7 +30,8 @@ public class ExampleUnitTest {
 
     @Test
     public void registerTest() throws IOException {
-
+        Api.get().findUser("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzQyNjU3NjIsImV4cCI6MTU3NDUyNDk2MiwidWlkIjoiMTkiLCJpc3MiOiJsd3MifQ.X3u_q3C5SUcuXoSbGbPQPAjgn6wioL0fmWU-7y-gqII",
+                15L).subscribe(v->v.getUser().getUsername(),e->e.printStackTrace());
 
     }
 }

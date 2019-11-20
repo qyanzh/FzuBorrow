@@ -4,11 +4,10 @@ public class UploadFileResponse {
     int code;
     String message;
     Data data;
-    static class Data {
+    public static class Data {
         private String imgurl;
 
         public String getImgurl() {
-//            return "http://49.235.150.59:8080/jiebei/img/get/?url=" + imgurl;
             return imgurl;
         }
 

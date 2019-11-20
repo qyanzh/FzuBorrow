@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.seven.fzuborrow.Constants;
 import com.seven.fzuborrow.R;
+import com.seven.fzuborrow.ui.home.add.AddActivity;
 import com.seven.fzuborrow.ui.home.detail.GoodDetailActivity;
 import com.seven.fzuborrow.ui.home.search.GoodSearchActivity;
 
@@ -65,7 +66,8 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
         root.findViewById(R.id.bt_add_good).setOnClickListener(v->{
-            //TODO:添加物品
+            Intent intent = new Intent(getContext(), AddActivity.class);
+            startActivity(intent);
         });
         subscribeUi();
         return root;

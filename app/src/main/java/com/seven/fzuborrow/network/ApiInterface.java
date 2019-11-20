@@ -57,8 +57,10 @@ public interface ApiInterface {
     );//更新用户资料，包括用户名密码住址
 
     @POST("user/findUser")
+    @FormUrlEncoded
     Observable<FindUserResponse> findUser(
-            @Header("XW-Token") String token
+            @Header("XW-Token") String token,
+            @Field("uid")Long uid
     );//查询当前用户资料 TODO:查询其他用户
 
     @GET("good/findGood")
@@ -75,7 +77,8 @@ public interface ApiInterface {
             @Field("type") String type,// Constants
             @Field("detail") String detail,
             @Field("location") String location,
-            @Field("price") String price
+            @Field("price") Double price,
+            @Field("imgurl") String imgurl
     );
 
     @GET("good/findAllGoods")
@@ -130,7 +133,8 @@ public interface ApiInterface {
     Observable<CreateDiscResponse> createDisc(
             @Header("XW-Token") String token,
             @Query("title") String title,
-            @Query("username") String username
+            @Query("username") String username,
+            @Query("imgurl") String imgurl
     );
 
     @GET("community/findAllComment")
