@@ -86,6 +86,7 @@ class UserInfoActivity : AppCompatActivity() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+                    updateUser()
                 }, {
                     Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show()
                 })

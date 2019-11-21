@@ -6,12 +6,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.seven.fzuborrow.Constants;
 import com.seven.fzuborrow.R;
@@ -25,12 +27,16 @@ public class HomeFragment extends Fragment {
 
     GoodsAdapter goodsAdapter;
 
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    String type;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        swipeRefreshLayout = root.findViewById(R.id.swipe_refresh);
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
         goodsAdapter = new GoodsAdapter(good -> {
             Intent intent = new Intent(this.getActivity(),
                     GoodDetailActivity.class);
@@ -38,6 +44,7 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         });
         goodsAdapter.addOnTabClickListener(type -> {
+            this.type = type;
             if (type.equals("活动室")) {
                 homeViewModel.getGoodsFromServer(Constants.GOOD_TYPE_ROOM);
             } else if (type.equals("个人闲置")) {
@@ -61,13 +68,20 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-        root.findViewById(R.id.search_bar).setOnClickListener(v->{
+        root.findViewById(R.id.search_bar).setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), GoodSearchActivity.class);
             startActivity(intent);
         });
-        root.findViewById(R.id.bt_add_good).setOnClickListener(v->{
+        root.findViewById(R.id.bt_add_good).setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), AddActivity.class);
             startActivity(intent);
+        });
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if (type.equals("活动室")) {
+                homeViewModel.getGoodsFromServer(Constants.GOOD_TYPE_ROOM);
+            } else if (type.equals("个人闲置")) {
+                homeViewModel.getGoodsFromServer(Constants.GOOD_TYPE_GOOD);
+            }
         });
         subscribeUi();
         return root;
@@ -77,6 +91,8 @@ public class HomeFragment extends Fragment {
 
         homeViewModel.getGoods().observe(this, goods -> {
             goodsAdapter.submitList(goods);
+            Toast.makeText(getContext(), "刷新完成", Toast.LENGTH_SHORT).show();
+            swipeRefreshLayout.setRefreshing(false);
         });
     }
 
