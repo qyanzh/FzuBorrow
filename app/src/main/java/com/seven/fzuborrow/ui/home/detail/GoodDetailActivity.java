@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -33,6 +34,10 @@ import java.util.Locale;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
+import static com.seven.fzuborrow.Constants.GOOD_TYPE_GOOD;
+import static com.seven.fzuborrow.utils.ContactUtilKt.showContactDialog;
 
 public class GoodDetailActivity extends AppCompatActivity {
 
@@ -62,6 +67,7 @@ public class GoodDetailActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("CheckResult")
     private void showGood() {
         ((TextView)findViewById(R.id.toolbar_title)).setText(good.getName());
 
@@ -70,10 +76,13 @@ public class GoodDetailActivity extends AppCompatActivity {
 
         Button btBorrow = findViewById(R.id.bt_borrow);
         btBorrow.setOnClickListener(v -> showBorrowDialog());
-        //TODO:判断当前用户是否是拥有者
+        if(User.getLoggedInUser().getUid() == good.getUid()) {
+            btBorrow.setVisibility(View.GONE);
+        }
         if (good.getStatus() == Constants.GOOD_STATUS_BORROWED) {
             btBorrow.setBackground(getDrawable(R.drawable.corner_button_grey));
             btBorrow.setText("已借出");
+            btBorrow.setEnabled(false);
         }
 
         TextView tvDetail = findViewById(R.id.tv_good_detail);
@@ -82,11 +91,20 @@ public class GoodDetailActivity extends AppCompatActivity {
         TextView tvOwnerName = findViewById(R.id.tv_owner_name);
         TextView tvOwnerContact = findViewById(R.id.tv_owner_contact);
 
-        tvOwnerName.setText(good.getUid() + "");
-
-        //TODO:查询拥有者姓名和联系方式
-
+        Api.get().findUserByUid(User.getLoggedInUser().getToken(),good.getUid())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(findUserResponse -> {
+                    if(good.getType().equals(GOOD_TYPE_GOOD)) {
+                        tvOwnerName.setText(findUserResponse.getUser().getUsername());
+                    } else {
+                        tvOwnerName.setText(findUserResponse.getUser().getName());
+                    }
+                    tvOwnerContact.setOnClickListener(v-> showContactDialog(this, findUserResponse.getUser()));
+                });
     }
+
+
 
     private Calendar startTime;
     private Calendar endTime;

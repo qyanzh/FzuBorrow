@@ -87,7 +87,6 @@ public class Good implements Parcelable {
         this.location = location;
     }
 
-    //TODO 对接完成后修改
     public String getImgurl() {
         if(imgurl!=null) {
             if(imgurl.startsWith("http")) {
