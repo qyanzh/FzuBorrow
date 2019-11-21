@@ -51,8 +51,17 @@ public class LoginActivity extends AppCompatActivity {
         // 作变换，即作嵌套网络请求
         Api.get().login(username, password)
                 .subscribeOn(Schedulers.io())
-                .doOnNext(loginResponse -> user.setToken(loginResponse.getToken()))
-                .flatMap(loginResponse -> Api.get().findUser(user.getToken(),user.getUid()))
+                .doOnNext(loginResponse -> {user.setToken(loginResponse.getToken());
+                    //TODO DELETE
+                    User currentUser = new User();
+                    currentUser.setToken(user.getToken());
+                    User.setLoggedInUser(currentUser);
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                    //TODO DELETE
+                })
+                .flatMap(loginResponse -> Api.get().findUser(user.getToken(),19L))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(findUserResponse -> {
                     Toast.makeText(this, findUserResponse.getMessage(), Toast.LENGTH_SHORT).show();
@@ -65,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                         finish();
                     }
                 },e-> Toast.makeText(this, "网络连接异常", Toast.LENGTH_SHORT).show());
+
     }
 
     @SuppressLint("CheckResult")

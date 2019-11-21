@@ -57,6 +57,11 @@ public interface ApiInterface {
     );//更新用户资料，包括用户名密码住址
 
     @POST("user/findUser")
+    Observable<FindUserResponse> findUser(
+            @Header("XW-Token") String token
+    );//查询当前用户资料
+
+    @POST("user/findUser")
     @FormUrlEncoded
     Observable<FindUserResponse> findUser(
             @Header("XW-Token") String token,
@@ -166,5 +171,11 @@ public interface ApiInterface {
             @Part("type") int type
     );//传文件 1/2/3
 
+    @POST("user/findUserByUid")
+    @FormUrlEncoded
+    Observable<FindUserResponse> findUserByUid(
+            @Header("XW-Token") String token,
+            @Field("uid") long uid
+    );
 
 }

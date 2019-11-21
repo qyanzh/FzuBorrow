@@ -1,6 +1,7 @@
 package com.seven.fzuborrow.ui.notifications.apply
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
@@ -13,6 +14,7 @@ import com.seven.fzuborrow.data.Apply
 import com.seven.fzuborrow.data.User
 import com.seven.fzuborrow.network.Api
 import com.seven.fzuborrow.network.response.FindApplyResponse
+import com.seven.fzuborrow.ui.notifications.apply.detail.ApplyDetailActivity
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -24,6 +26,9 @@ class ApplyHistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_apply_history)
+        //TODO DELETE
+        startActivity(Intent(this, ApplyDetailActivity::class.java))
+        //TODO DELETE
         var observable: Observable<FindApplyResponse>
         if (intent.getStringExtra("mode") == "my_apply") {
             toolbar.title = "我的申请"
