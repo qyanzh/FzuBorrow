@@ -10,6 +10,7 @@ public class User {
     private String schoolid;
     private String phonenum;
     private String username;//登录名
+    private String password;
     private String address;
     private String qq;
     private String wechat;
@@ -47,7 +48,15 @@ public class User {
     }
 
     public String getImgurl() {
-        return imgurl;
+        if(imgurl!=null) {
+            if(imgurl.startsWith("http")) {
+                return imgurl;
+            } else {
+                return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
+            }
+        } else {
+            return null;
+        }
     }
 
     public void setImgurl(String imgurl) {

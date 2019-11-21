@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.seven.fzuborrow.R;
 import com.seven.fzuborrow.data.User;
+import com.seven.fzuborrow.ui.login.UserInfoActivity;
 
 public class MineFragment extends Fragment implements View.OnClickListener {
 
@@ -26,6 +27,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
     }
 
     private void getbind(View root) {
+        root.findViewById(R.id.layout_info).setOnClickListener(v -> startActivity(new Intent(getContext(), UserInfoActivity.class)));
         ((TextView) root.findViewById(R.id.mine_name)).setText(User.getLoggedInUser().getUsername());
         ((TextView) root.findViewById(R.id.mine_number)).setText("学号:" + User.getLoggedInUser().getSchoolid());
         ImageView avatar = root.findViewById(R.id.image_mine_head);

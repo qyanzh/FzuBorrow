@@ -50,12 +50,31 @@ public interface ApiInterface {
 
     @POST("user/update")
     @FormUrlEncoded
-    Observable<UserUpdateResponse> userUpdate(
+    Observable<UserUpdateResponse> userInfoUpdate(
             @Header("XW-Token") String token,
             @Field("username") String username,
-            @Field("password") String password,
-            @Field("address") String address
-    );//更新用户资料，包括用户名密码住址
+            @Field("name") String name,
+            @Field("department") String department,
+            @Field("speciality") String speciality,
+            @Field("cls") String clazz,
+            @Field("qq") String qq,
+            @Field("wechat") String wechat,
+            @Field("phonenum") String phonenum
+    );//更新用户资料
+
+    @POST("user/update")
+    @FormUrlEncoded
+    Observable<UserUpdateResponse> userAvatarUpdate(
+            @Header("XW-Token") String token,
+            @Field("imgurl") String url
+    );//换头像
+
+    @POST("user/update")
+    @FormUrlEncoded
+    Observable<UserUpdateResponse> userPasswordUpdate(
+            @Header("XW-Token") String token,
+            @Field("password") String password
+    );//换头像
 
     @POST("user/findUser")
     Observable<FindUserResponse> findUser(
@@ -66,7 +85,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     Observable<FindUserResponse> findUser(
             @Header("XW-Token") String token,
-            @Field("uid")Long uid
+            @Field("uid") Long uid
     );
 
     @POST("user/findUserByUid")
@@ -193,7 +212,6 @@ public interface ApiInterface {
             @Part MultipartBody.Part file,
             @Part("type") int type
     );//传文件 1/2/3
-
 
 
 }

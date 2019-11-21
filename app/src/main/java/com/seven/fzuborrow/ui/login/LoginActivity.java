@@ -48,21 +48,30 @@ public class LoginActivity extends AppCompatActivity {
             password = "12345";
         }
         final User user = new User();
-        // 作变换，即作嵌套网络请求
         Api.get().login(username, password)
                 .subscribeOn(Schedulers.io())
                 .doOnNext(loginResponse -> user.setToken(loginResponse.getToken()))
                 .flatMap(loginResponse -> Api.get().findUser(user.getToken()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(findUserResponse -> {
-                    Toast.makeText(this, findUserResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "登陆成功", Toast.LENGTH_SHORT).show();
                     if (findUserResponse.getCode() == 200) {
                         User currentUser = findUserResponse.getUser();
                         currentUser.setToken(user.getToken());
                         User.setLoggedInUser(currentUser);
-                        Intent intent = new Intent(this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
+                        if (currentUser.getName() == null
+                                || currentUser.getDepartment() == null
+                                || currentUser.getSpeciality() == null
+                                || currentUser.getClazz() == null
+                                || currentUser.getPhonenum() == null && currentUser.getQq() == null && currentUser.getWechat() == null) {
+                            Intent intent = new Intent(this, UserInfoActivity.class).putExtra("register", true);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            Intent intent = new Intent(this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                 }, e -> Toast.makeText(this, "网络连接异常", Toast.LENGTH_SHORT).show());
 

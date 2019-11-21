@@ -54,7 +54,7 @@ public fun showContactDialog(context:Context,user: User) {
         contactList.add("手机: $it (点击跳转)")
     }
     MaterialAlertDialogBuilder(context, R.style.AlertDialogTheme)
-        .setTitle("车主联系方式")
+        .setTitle("联系方式")
         .setItems(contactList.toTypedArray()) { _, position ->
             when {
                 contactList[position].startsWith("微信") -> copyWechat(context,user.wechat)

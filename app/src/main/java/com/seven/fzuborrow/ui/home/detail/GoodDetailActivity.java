@@ -101,7 +101,7 @@ public class GoodDetailActivity extends AppCompatActivity {
                         tvOwnerName.setText(findUserResponse.getUser().getName());
                     }
                     tvOwnerContact.setOnClickListener(v-> showContactDialog(this, findUserResponse.getUser()));
-                });
+                },e-> Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show());
     }
 
 
