@@ -14,6 +14,7 @@ import com.seven.fzuborrow.network.response.HandleApplyResponse;
 import com.seven.fzuborrow.network.response.LoginResponse;
 import com.seven.fzuborrow.network.response.PublishCommentResponse;
 import com.seven.fzuborrow.network.response.RegisterResponse;
+import com.seven.fzuborrow.network.response.ReturnGoodResponse;
 import com.seven.fzuborrow.network.response.UploadFileResponse;
 import com.seven.fzuborrow.network.response.UserUpdateResponse;
 
@@ -66,7 +67,14 @@ public interface ApiInterface {
     Observable<FindUserResponse> findUser(
             @Header("XW-Token") String token,
             @Field("uid")Long uid
-    );//查询当前用户资料 TODO:查询其他用户
+    );
+
+    @POST("user/findUserByUid")
+    @FormUrlEncoded
+    Observable<FindUserResponse> findUserByUid(
+            @Header("XW-Token") String token,
+            @Field("uid") long uid
+    );
 
     @GET("good/findGood")
     Observable<FindGoodResponse> findGood(
@@ -128,6 +136,21 @@ public interface ApiInterface {
             @Field("gid") long goodId
     );//处理申请，1/0
 
+    @POST("request/returnThing")
+    @FormUrlEncoded
+    Observable<ReturnGoodResponse> returnGood(
+            @Header("XW-Token") String token,
+            @Field("rid") long applyId
+    );
+
+    @POST("request/confirmReturn")
+    @FormUrlEncoded
+    Observable<ReturnGoodResponse> confirmReturn(
+            @Header("XW-Token") String token,
+            @Field("rid") long applyId,
+            @Field("type") int type
+    );
+
     @GET("community/findAllDisc")
     Observable<FindAllDiscResponse> findAllDisc(
             @Header("XW-Token") String token,
@@ -171,11 +194,6 @@ public interface ApiInterface {
             @Part("type") int type
     );//传文件 1/2/3
 
-    @POST("user/findUserByUid")
-    @FormUrlEncoded
-    Observable<FindUserResponse> findUserByUid(
-            @Header("XW-Token") String token,
-            @Field("uid") long uid
-    );
+
 
 }

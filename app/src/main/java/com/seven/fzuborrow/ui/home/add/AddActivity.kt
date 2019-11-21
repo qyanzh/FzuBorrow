@@ -74,7 +74,7 @@ class AddActivity : AppCompatActivity() {
             val file = File(imagePath)
             val fileBody = file.asRequestBody("image/png".toMediaTypeOrNull())
             val filePart = MultipartBody.Part.createFormData("file", file.name, fileBody)
-            Api.get().uploadFile(User.getLoggedInUser().token, filePart, Constants.UPLOAD_TYPE_DISC)
+            Api.get().uploadFile(User.getLoggedInUser().token, filePart, Constants.UPLOAD_TYPE_GOOD)
                 .subscribeOn(Schedulers.io())
                 .flatMap<AddGoodResponse> { uploadFileResponse ->
                     Api.get().addGood(

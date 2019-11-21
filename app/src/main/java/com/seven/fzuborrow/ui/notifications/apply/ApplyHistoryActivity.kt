@@ -1,7 +1,6 @@
 package com.seven.fzuborrow.ui.notifications.apply
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
@@ -14,7 +13,6 @@ import com.seven.fzuborrow.data.Apply
 import com.seven.fzuborrow.data.User
 import com.seven.fzuborrow.network.Api
 import com.seven.fzuborrow.network.response.FindApplyResponse
-import com.seven.fzuborrow.ui.notifications.apply.detail.ApplyDetailActivity
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -26,25 +24,25 @@ class ApplyHistoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_apply_history)
-        //TODO DELETE
-        startActivity(Intent(this, ApplyDetailActivity::class.java))
-        //TODO DELETE
         var observable: Observable<FindApplyResponse>
         if (intent.getStringExtra("mode") == "my_apply") {
-            toolbar.title = "我的申请"
+            toolbar_title.text = "我的申请"
             observable = Api.get().findApply(User.getLoggedInUser().token)
         } else {
-            toolbar.title = "我的借出"
+            toolbar_title.text = "我的借出"
             observable = Api.get().findBeApply(User.getLoggedInUser().token)
         }
         setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            title = ""
+        }
 
         observable.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 val fragmentList = listOf(
-                    ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_PENDDING } as ArrayList<Apply>),
+                    ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_PENDING } as ArrayList<Apply>),
                     ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_USING } as ArrayList<Apply>),
                     ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_FINISHED } as ArrayList<Apply>)
                 )

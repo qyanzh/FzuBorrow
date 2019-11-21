@@ -1,26 +1,38 @@
 package com.seven.fzuborrow.ui.mine;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import com.seven.fzuborrow.Constants;
 import com.seven.fzuborrow.R;
 import com.seven.fzuborrow.data.Good;
+import com.seven.fzuborrow.data.User;
+import com.seven.fzuborrow.network.Api;
+import com.seven.fzuborrow.ui.home.GoodsAdapter;
+import com.seven.fzuborrow.ui.home.detail.GoodDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-//     我管理的
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 public class MineManagerActivity extends AppCompatActivity {
-    private ManagerAdapter adapter;
+    private GoodsAdapter adapter;
     private List<Good> list;
-    ImageView back;
-    TextView back_text;
+    private List<Good> goodList = new ArrayList<>();
+    private List<Good> roomList = new ArrayList<>();
+
+
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,57 +40,49 @@ public class MineManagerActivity extends AppCompatActivity {
         setSupportActionBar(findViewById(R.id.manager_toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("");
-        RecyclerView recyclerView =(RecyclerView) findViewById(R.id.manage_recyclerview);
-        list = new ArrayList<>();
-
-        /*这里往下*/ // 在这里需要设置的属性是
-        // 基本的gid，name，detail，url，status，money（待定好像）
-
-
-
-
-
-        Good g1 = new Good(9,"螺丝刀","这是一把惊天地泣鬼神的螺丝刀，千万不能拿来拧螺丝");
-        g1.setImgurl("https://i.loli.net/2019/11/06/gfTaEAuw95yqN3O.jpg");
-        g1.setStatus(1);
-        list.add(g1);
-
-        Good g2 = new Good(12,"铅笔","这是一根没有笔芯的铅笔");
-        g2.setImgurl( "https://i.loli.net/2019/11/06/1GuQCMKY6aXpT7m.jpg");
-        g2.setStatus(2);
-        list.add(g2);
-
-        Good g3 = new Good(10,"高数书","这是一本神奇的书，一本属于挂科人的书");
-        g3.setImgurl("https://i.loli.net/2019/11/06/x2wVG1dhzFUABKv.jpg");
-        g3.setStatus(0);
-        list.add(g3);
-
-        Good g4 = new Good(11,"耳机","在这里，你可以体验单声道的快乐");
-        g4.setImgurl("https://i.loli.net/2019/11/06/igqEHyIhJpvuBO4.jpg");
-        g4.setStatus(0);
-        list.add(g4);
-
-        //long id, String name, String profile
-        /*到这里都是构造list的过程，属于后期修改部分*/
-        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
-        adapter = new ManagerAdapter(list,this);
+        RecyclerView recyclerView = findViewById(R.id.manage_recyclerview);
+        adapter = new GoodsAdapter(good -> {
+            Intent intent = new Intent(this, GoodDetailActivity.class)
+                    .putExtra("good", good);
+            startActivity(intent);
+        });
+        adapter.addOnTabClickListener(type -> {
+            if (type.equals("活动室")) {
+                adapter.submitList(roomList);
+            } else if (type.equals("个人闲置")) {
+                adapter.submitList(goodList);
+            }
+        });
+        adapter.setBannerVisible(false);
         recyclerView.setAdapter(adapter);
-
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        refreshGoods();
     }
+
+    @SuppressLint("CheckResult")
+    private void refreshGoods() {
+        Api.get().findAllGoodByUid(User.getLoggedInUser().getToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(findAllGoodsResponse -> {
+                    list = findAllGoodsResponse.getGoodList();
+                    for (Good good : list) {
+                        if (good.getType().equals(Constants.GOOD_TYPE_GOOD)) {
+                            goodList.add(good);
+                        } else {
+                            roomList.add(good);
+                        }
+                    }
+                    adapter.submitList(roomList);
+                }, e -> Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show());
+    }
+
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-//            case R.id.manager_back:
-//                onBackPressed();
-//                break;
-//            case R.id.manager_back_text:
-//                onBackPressed();
-//                break;
-
             case android.R.id.home:
                 onBackPressed();
                 break;
         }
-
         return true;
     }
 }

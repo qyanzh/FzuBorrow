@@ -9,11 +9,14 @@ public class Constants {
     public static final int APPLY_TYPE_ACCEPT = 1;
     public static final int APPLY_TYPE_REJECT = 0;
 
-    public static final int APPLY_STATUS_PENDDING = 0;
+    public static final int APPLY_STATUS_PENDING = 0;
     public static final int APPLY_STATUS_USING = 1;
     public static final int APPLY_STATUS_FINISHED = 2;
+    public static final int APPLY_STATUS_REJECTED = 3;
+    public static final int APPLY_STATUS_WATING = 4; //等待拥有者确认已归还
 
-
+    public static final int CONFIRM_TYPE_OK = 1; //拥有者确认归还
+    public static final int CONFIRM_TYPE_NO = 0; //拥有者拒绝确认
 
     public static final int UPLOAD_TYPE_AVATAR = 1;
     public static final int UPLOAD_TYPE_GOOD = 2;
@@ -22,5 +25,9 @@ public class Constants {
     public static final int GOOD_STATUS_PENDING = 0;
     public static final int GOOD_STATUS_BORROWED = 1;
     public static final int GOOD_STATUS_AVAILABLE = 2;
+
+
+
+
 
 }

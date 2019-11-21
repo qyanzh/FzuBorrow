@@ -38,14 +38,32 @@ public class GoodDetailActivity extends AppCompatActivity {
 
     Good good;
 
+    @SuppressLint("CheckResult")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_good_detail);
         setSupportActionBar(findViewById(R.id.toolbar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("");
+
         good = getIntent().getParcelableExtra("good");
-        getSupportActionBar().setTitle(good.getName());
+        if(good == null) {
+            long gid = getIntent().getLongExtra("gid", 0);
+            Api.get().findGood(User.getLoggedInUser().getToken(), gid)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(findGoodResponse -> {
+                        good = findGoodResponse.getGood();
+                        showGood();
+                    }, e -> Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show());
+        } else {
+            showGood();
+        }
+    }
+
+    private void showGood() {
+        ((TextView)findViewById(R.id.toolbar_title)).setText(good.getName());
 
         ImageView ivGood = findViewById(R.id.iv_image);
         Glide.with(this).load(good.getImgurl()).into(ivGood);
@@ -68,7 +86,6 @@ public class GoodDetailActivity extends AppCompatActivity {
 
         //TODO:查询拥有者姓名和联系方式
 
-
     }
 
     private Calendar startTime;
@@ -78,7 +95,7 @@ public class GoodDetailActivity extends AppCompatActivity {
     private void showBorrowDialog() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this)
                 .setView(R.layout.dialog_borrow)
-                .setPositiveButton("拨打", null)
+                .setPositiveButton("申请", null)
                 .setNegativeButton("取消", null);
         AlertDialog dialog = builder.create();
         dialog.show();

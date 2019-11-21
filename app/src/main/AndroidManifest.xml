@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.notifications.apply.detail.ApplyDetailActivity"></activity>
+        <activity android:name=".ui.mine.restore.RestoreActivity"></activity>
+        <activity android:name=".ui.notifications.apply.detail.ApplyDetailActivity" />
         <activity android:name=".ui.home.add.AddActivity" />
         <activity android:name=".ui.home.search.GoodSearchActivity" />
         <activity android:name=".ui.notifications.apply.ApplyHistoryActivity" />

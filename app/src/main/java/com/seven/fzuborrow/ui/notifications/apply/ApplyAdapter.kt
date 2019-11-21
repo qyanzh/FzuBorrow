@@ -39,7 +39,6 @@ class ApplyAdapter(val listener:ApplyListener) :
                 tv_username.text = user?.username
                 Glide.with(this).load(user?.imgurl)
             } else {
-                //TODO:查询用户
                 Api.get().findUser(User.getLoggedInUser().token,apply.uid.toLong()).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe ({

@@ -51,7 +51,7 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
         super.submitList(goods, commitCallback);
     }
 
-    GoodsAdapter(GoodClickListener listener) {
+    public GoodsAdapter(GoodClickListener listener) {
         super(new DiffUtil.ItemCallback<Good>() {
             @Override
             public boolean areItemsTheSame(@NonNull Good oldItem, @NonNull Good newItem) {
@@ -124,6 +124,11 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
 
                 }
             });
+            if(!bannerVisible) {
+                ((HeaderViewHolder) holder).bannerImage.setVisibility(View.GONE);
+            } else {
+                ((HeaderViewHolder) holder).bannerImage.setVisibility(View.VISIBLE);
+            }
         } else {
             holder.itemView.setVisibility(View.GONE);
         }
@@ -146,10 +151,11 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
     static class HeaderViewHolder extends RecyclerView.ViewHolder {
 
         TabLayout tabLayout;
-
+        ImageView bannerImage;
         HeaderViewHolder(@NonNull View itemView) {
             super(itemView);
             tabLayout = itemView.findViewById(R.id.tab_layout);
+            bannerImage = itemView.findViewById(R.id.iv_banner);
             tabLayout.addTab(tabLayout.newTab().setText("活动室"));
             tabLayout.addTab(tabLayout.newTab().setText("个人闲置"));
         }
@@ -173,15 +179,21 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
         }
     }
 
-    interface GoodClickListener {
+    public interface GoodClickListener {
         void onClick(Good good);
     }
 
-    interface TabClickListener {
+    public interface TabClickListener {
         void onTabClick(String type);
     }
 
     public void addOnTabClickListener(TabClickListener listener) {
         this.tabListener = listener;
     }
+
+    public void setBannerVisible(boolean bannerVisible) {
+        this.bannerVisible = bannerVisible;
+    }
+
+    private boolean bannerVisible = true;
 }

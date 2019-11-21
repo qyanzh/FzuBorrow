@@ -1,13 +1,8 @@
 package com.seven.fzuborrow.network.response;
 
-import com.seven.fzuborrow.data.Good;
-import com.squareup.moshi.Json;
-
-public class FindGoodResponse {
+public class ReturnGoodResponse {
     private int code;
     private String message;
-    @Json(name = "data")
-    private Good good;
 
     public int getCode() {
         return code;
@@ -23,13 +18,5 @@ public class FindGoodResponse {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public Good getGood() {
-        return good;
-    }
-
-    public void setGood(Good good) {
-        this.good = good;
     }
 }
