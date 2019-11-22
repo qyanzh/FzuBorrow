@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
+import com.google.android.material.snackbar.Snackbar
 import com.seven.fzuborrow.Constants.*
 import com.seven.fzuborrow.R
 import com.seven.fzuborrow.data.Apply
@@ -20,7 +21,6 @@ import kotlinx.android.synthetic.main.activity_apply_history.*
 
 class ApplyHistoryActivity : AppCompatActivity() {
 
-    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_apply_history)
@@ -41,11 +41,22 @@ class ApplyHistoryActivity : AppCompatActivity() {
             title = ""
         }
 
+        refreshList(observable, isOut)
 
+        swipe_refresh.setOnRefreshListener {
+            refreshList(observable, isOut)
+        }
+    }
 
+    @SuppressLint("CheckResult")
+    private fun refreshList(
+        observable: Observable<FindApplyResponse>,
+        isOut: Boolean
+    ) {
         observable.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
+                val currentPage = view_pager.currentItem
                 val fragmentList = listOf(
                     ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_PENDING } as ArrayList<Apply>,
                         isOut),
@@ -84,6 +95,11 @@ class ApplyHistoryActivity : AppCompatActivity() {
                 }
                 view_pager.offscreenPageLimit = 2
                 tab_layout.setupWithViewPager(view_pager)
+                view_pager.currentItem = currentPage
+                if(swipe_refresh.isRefreshing) {
+                    swipe_refresh.isRefreshing = false
+                    Toast.makeText(this, "刷新完成", Toast.LENGTH_SHORT).show()
+                }
             }, { Toast.makeText(this, "网络连接异常", Toast.LENGTH_SHORT).show() })
     }
 

@@ -5,25 +5,26 @@ import android.os.Parcelable;
 
 import com.squareup.moshi.Json;
 
+import retrofit2.http.Field;
+
 public class Apply implements Parcelable {
-    public Apply(){}
     private int rid;
     private int uid;
     private int gid;
 
-    @Json(name="req_name")
+    @Json(name = "req_time")
     private long requestTime;
 
-    @Json(name="start_name")
+    @Json(name = "start_time")
     private long startTime;
 
-    @Json(name="end_name")
+    @Json(name = "end_time")
     private long endTime;
 
     private String reason;
     private int status;
 
-    @Json(name="resp")
+    @Json(name = "resp")
     private String response;
 
     private int pid;
@@ -150,5 +151,21 @@ public class Apply implements Parcelable {
 
     public void setPid(int pid) {
         this.pid = pid;
+    }
+
+    @Override
+    public String toString() {
+        return "Apply{" +
+                "rid=" + rid +
+                ", uid=" + uid +
+                ", gid=" + gid +
+                ", requestTime=" + requestTime +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", reason='" + reason + '\'' +
+                ", status=" + status +
+                ", response='" + response + '\'' +
+                ", pid=" + pid +
+                '}';
     }
 }

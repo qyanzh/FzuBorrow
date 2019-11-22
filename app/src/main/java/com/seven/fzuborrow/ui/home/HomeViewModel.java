@@ -16,6 +16,7 @@ import com.seven.fzuborrow.data.Good;
 import com.seven.fzuborrow.data.User;
 import com.seven.fzuborrow.network.Api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -26,7 +27,7 @@ public class HomeViewModel extends AndroidViewModel {
     private MutableLiveData<List<Good>> mGoods = new MutableLiveData<>();
 
     {
-        getGoodsFromServer(Constants.GOOD_TYPE_ROOM);
+        getGoodsFromServer(Constants.GOOD_TYPE_GOOD);
     }
 
     private static final String TAG = "HomeViewModel";
@@ -45,7 +46,14 @@ public class HomeViewModel extends AndroidViewModel {
                         Log.d(TAG, "getGoodsFromServer: "+good.getName());
                     }
                     mGoods.setValue(findAllGoodsResponse.getGoodList());
-                },e-> Toast.makeText(getApplication(), "网络连接异常", Toast.LENGTH_SHORT).show());
+                },e->  {
+                    if(type.equals(Constants.GOOD_TYPE_GOOD)) {
+                        Toast.makeText(getApplication(), "没有空闲的物品", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplication(), "没有空闲的活动室", Toast.LENGTH_SHORT).show();
+                    }
+                    mGoods.setValue(new ArrayList<>());
+                });
     }
 
     public LiveData<List<Good>> getGoods() {

@@ -45,7 +45,7 @@ public class MyBorrowActivity extends AppCompatActivity {
                         if(apply.getStatus()==APPLY_STATUS_FINISHED
                         ||apply.getStatus()== APPLY_STATUS_WAITING
                         ||apply.getStatus()==APPLY_STATUS_USING) {
-                            list.add(apply);
+                            list.add(0,apply);
                         }
                     }
                     adapter = new MyApplyAdapter(list, this);

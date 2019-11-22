@@ -2,12 +2,12 @@ package com.seven.fzuborrow.ui.notifications.apply.detail
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.seven.fzuborrow.Constants
 import com.seven.fzuborrow.Constants.*
 import com.seven.fzuborrow.R
 import com.seven.fzuborrow.data.Apply
@@ -34,7 +34,12 @@ class ApplyDetailActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
         }
 
-        apply = intent.getParcelableExtra<Apply>("apply") ?: return
+        apply = intent.getParcelableExtra("apply") ?: return
+
+        Log.d(
+            "ApplyDetailActivity", "onCreate: " +
+                    apply
+        )
         Api.get().findUserByUid(User.getLoggedInUser().token, apply.uid.toLong())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
@@ -54,13 +59,14 @@ class ApplyDetailActivity : AppCompatActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 tv_good.text = it.good.name
-                val f = SimpleDateFormat("MM/dd HH:mm", Locale.getDefault())
-                tv_time.text = f.format(apply.startTime) + " - " + f.format(apply.endTime)
-                tv_reason.text = apply.reason
             }, {
                 it.printStackTrace()
                 Toast.makeText(this, "网络异常", Toast.LENGTH_SHORT).show()
             })
+
+        val f = SimpleDateFormat("MM/dd HH:mm", Locale.getDefault())
+        tv_time.text = f.format(apply.startTime*1000L) + " - " + f.format(apply.endTime*1000L)
+        tv_reason.text = apply.reason
 
         checkFabVisibility()
 

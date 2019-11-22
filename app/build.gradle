@@ -63,4 +63,6 @@ dependencies {
     //image compress
     implementation 'com.github.nanchen2251:CompressHelper:1.0.5'
 
+    implementation 'com.zhihu.android:matisse:0.5.3-beta3'
+
 }

@@ -44,15 +44,22 @@ private fun jumpToPhone(context:Context,phone:String) {
 
 public fun showContactDialog(context:Context,user: User) {
     val contactList = mutableListOf<String>()
-    user.qq?.let {
-        contactList.add("QQ: $it (点击跳转)")
+    user.qq?.apply {
+        if(isNotBlank()) {
+            contactList.add("QQ: $this (点击跳转)")
+        }
     }
-    user?.wechat?.let {
-        contactList.add("微信: $it (点击复制)")
+    user.wechat?.apply {
+        if(isNotBlank()) {
+            contactList.add("微信: $this (点击跳转)")
+        }
     }
-    user?.phonenum?.let {
-        contactList.add("手机: $it (点击跳转)")
+    user.phonenum?.apply {
+        if(isNotBlank()) {
+            contactList.add("手机: $this (点击跳转)")
+        }
     }
+
     MaterialAlertDialogBuilder(context, R.style.AlertDialogTheme)
         .setTitle("联系方式")
         .setItems(contactList.toTypedArray()) { _, position ->

@@ -1,5 +1,6 @@
 package com.seven.fzuborrow.ui.home;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +19,14 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.tabs.TabLayout;
 import com.seven.fzuborrow.R;
 import com.seven.fzuborrow.data.Good;
+import com.seven.fzuborrow.data.User;
+import com.seven.fzuborrow.network.Api;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
 
@@ -85,6 +91,7 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
         }
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
@@ -101,6 +108,19 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
                 Glide.with(holder.itemView).load(R.drawable.banner_placeholder).into(((ItemViewHolder) holder).image);
             }
             holder.itemView.setVisibility(View.VISIBLE);
+            Api.get().findUserByUid(User.getLoggedInUser().getToken(), good.getUid()).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(findUserResponse -> {
+                        User user = findUserResponse.getUser();
+                        ((ItemViewHolder) holder).username.setText(user.getUsername());
+                        if(user.getImgurl()!=null) {
+                            Glide.with(holder.itemView).load(user.getImgurl()).into(((ItemViewHolder) holder).avatar);
+                        } else {
+                            Glide.with(holder.itemView).load(R.drawable.banner_placeholder).into(((ItemViewHolder) holder).avatar);
+                        }
+                        ((ItemViewHolder) holder).username.setText(findUserResponse.getUser().getUsername());
+                        holder.itemView.invalidate();
+                    }, Throwable::printStackTrace);
         } else if (holder instanceof HeaderViewHolder) {
             layoutParams.setFullSpan(true);
             ((HeaderViewHolder) holder).tabLayout.setOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
@@ -140,11 +160,16 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
         TextView profile;
         ImageView image;
 
+        ImageView avatar;
+        TextView username;
+
         ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.good_name);
             profile = itemView.findViewById(R.id.good_profile);
             image = itemView.findViewById(R.id.good_image);
+            avatar = itemView.findViewById(R.id.iv_avatar);
+            username = itemView.findViewById(R.id.tv_user_name);
         }
     }
 
@@ -156,8 +181,8 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
             super(itemView);
             tabLayout = itemView.findViewById(R.id.tab_layout);
             bannerImage = itemView.findViewById(R.id.iv_banner);
-            tabLayout.addTab(tabLayout.newTab().setText("活动室"));
             tabLayout.addTab(tabLayout.newTab().setText("个人闲置"));
+            tabLayout.addTab(tabLayout.newTab().setText("活动室"));
         }
     }
 

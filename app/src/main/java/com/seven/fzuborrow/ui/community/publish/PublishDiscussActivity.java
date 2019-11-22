@@ -2,6 +2,7 @@ package com.seven.fzuborrow.ui.community.publish;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +23,9 @@ import com.seven.fzuborrow.R;
 import com.seven.fzuborrow.data.User;
 import com.seven.fzuborrow.network.Api;
 import com.seven.fzuborrow.utils.ImageUtilKt;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
 
 import java.io.File;
 
@@ -110,9 +114,15 @@ public class PublishDiscussActivity extends AppCompatActivity {
     }
 
     private void pickImage() {
-        Intent intent = new Intent("android.intent.action.GET_CONTENT");
-        intent.setType("image/*");
-        startActivityForResult(intent, 0);
+        Matisse.from(this)
+                .choose(MimeType.ofAll())
+                .countable(false)
+                .maxSelectable(9)
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                .thumbnailScale(0.85f)
+                .imageEngine(new GlideEngine())
+                .showPreview(false)
+                .forResult(0);
     }
 
     @Override
@@ -121,7 +131,7 @@ public class PublishDiscussActivity extends AppCompatActivity {
         switch (requestCode) {
             case 0:
                 if (data != null) {
-                    imagePath = ImageUtilKt.convertImageUriToPath(this, data);
+                    imagePath = ImageUtilKt.getPath(this, Matisse.obtainResult(data).get(0));
                     Glide.with(this).load(imagePath).into(ivAddImage);
                 }
                 break;

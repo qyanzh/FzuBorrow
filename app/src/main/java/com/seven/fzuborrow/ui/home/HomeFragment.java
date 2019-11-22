@@ -29,7 +29,7 @@ public class HomeFragment extends Fragment {
 
     SwipeRefreshLayout swipeRefreshLayout;
 
-    String type = "活动室";
+    String type = "个人闲置";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -91,7 +91,10 @@ public class HomeFragment extends Fragment {
 
         homeViewModel.getGoods().observe(this, goods -> {
             goodsAdapter.submitList(goods);
-            swipeRefreshLayout.setRefreshing(false);
+            if(swipeRefreshLayout.isRefreshing()) {
+                swipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(getContext(), "刷新完成", Toast.LENGTH_SHORT).show();
+            }
         });
     }
 

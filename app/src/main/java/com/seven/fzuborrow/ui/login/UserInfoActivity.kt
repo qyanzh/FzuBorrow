@@ -3,6 +3,7 @@ package com.seven.fzuborrow.ui.login
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -17,7 +18,10 @@ import com.seven.fzuborrow.MainActivity
 import com.seven.fzuborrow.R
 import com.seven.fzuborrow.data.User
 import com.seven.fzuborrow.network.Api
-import com.seven.fzuborrow.utils.convertImageUriToPath
+import com.seven.fzuborrow.utils.getPath
+import com.zhihu.matisse.Matisse
+import com.zhihu.matisse.MimeType
+import com.zhihu.matisse.engine.impl.GlideEngine
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_register.*
@@ -25,6 +29,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
+
 
 class UserInfoActivity : AppCompatActivity() {
 
@@ -123,27 +128,41 @@ class UserInfoActivity : AppCompatActivity() {
     }
 
     private fun pickImage() {
-        val intent = Intent("android.intent.action.GET_CONTENT")
-        intent.type = "image/*"
-        startActivityForResult(intent, 0)
+        Matisse.from(this)
+            .choose(MimeType.ofAll())
+            .countable(false)
+            .maxSelectable(9)
+            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+            .thumbnailScale(0.85f)
+            .imageEngine(GlideEngine())
+            .showPreview(false)
+            .forResult(0)
     }
 
-    private var imagePath: String? = null
+//    private var imagePath: String? = null
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             0 -> if (data != null) {
-                imagePath = convertImageUriToPath(this, data)
+                val selected = Matisse.obtainResult(data)
+                val imagePath = getPath(this, selected[0])
                 Glide.with(this).load(imagePath).into(iv_avatar)
                 val file = File(imagePath)
-                val compressedFile = CompressHelper.getDefault(applicationContext).compressToFile(file)
-                val fileBody = compressedFile.asRequestBody("image/png".toMediaTypeOrNull())
-                val filePart = MultipartBody.Part.createFormData("file", compressedFile.name, fileBody)
+                val compressedFile =
+                    CompressHelper.getDefault(applicationContext).compressToFile(file)
+                val fileBody = compressedFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                val filePart =
+                    MultipartBody.Part.createFormData("file", compressedFile.name, fileBody)
                 Api.get()
-                    .uploadFile(User.getLoggedInUser().token, filePart, Constants.UPLOAD_TYPE_AVATAR)
+                    .uploadFile(
+                        User.getLoggedInUser().token,
+                        filePart,
+                        Constants.UPLOAD_TYPE_AVATAR
+                    )
                     .subscribeOn(Schedulers.io())
                     .flatMap {
+                        User.getLoggedInUser().imgurl = it.data.imgurl
                         Api.get().userAvatarUpdate(User.getLoggedInUser().token, it.data.imgurl)
                     }
                     .observeOn(AndroidSchedulers.mainThread())
@@ -183,5 +202,6 @@ class UserInfoActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
 
 }

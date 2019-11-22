@@ -1,8 +1,32 @@
 package com.seven.fzuborrow.data;
 
+import android.annotation.SuppressLint;
+
+import com.seven.fzuborrow.network.Api;
 import com.squareup.moshi.Json;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 public class User {
+
+    @SuppressLint("CheckResult")
+    public static void update(Runnable onNext, Runnable onError) {
+        Api.get().findUser(getLoggedInUser().getToken())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(findUserResponse -> {
+                    User user = findUserResponse.getUser();
+                    user.setToken(getLoggedInUser().getToken());
+                    setLoggedInUser(user);
+                    if (onNext != null) onNext.run();
+                }, e -> {
+                    e.printStackTrace();
+                    if (onError != null) {
+                        onError.run();
+                    }
+                });
+    }
 
     private long uid;
     private String imgurl;
@@ -48,8 +72,8 @@ public class User {
     }
 
     public String getImgurl() {
-        if(imgurl!=null) {
-            if(imgurl.startsWith("http")) {
+        if (imgurl != null) {
+            if (imgurl.startsWith("http")) {
                 return imgurl;
             } else {
                 return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
@@ -142,4 +166,5 @@ public class User {
     public void setClazz(String clazz) {
         this.clazz = clazz;
     }
+
 }

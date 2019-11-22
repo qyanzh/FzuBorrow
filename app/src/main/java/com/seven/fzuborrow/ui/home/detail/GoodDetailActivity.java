@@ -34,7 +34,6 @@ import java.util.Locale;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import static com.seven.fzuborrow.Constants.GOOD_TYPE_GOOD;
 import static com.seven.fzuborrow.utils.ContactUtilKt.showContactDialog;
@@ -53,7 +52,7 @@ public class GoodDetailActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("");
 
         good = getIntent().getParcelableExtra("good");
-        if(good == null) {
+        if (good == null) {
             long gid = getIntent().getLongExtra("gid", 0);
             Api.get().findGood(User.getLoggedInUser().getToken(), gid)
                     .subscribeOn(Schedulers.io())
@@ -69,15 +68,18 @@ public class GoodDetailActivity extends AppCompatActivity {
 
     @SuppressLint("CheckResult")
     private void showGood() {
-        ((TextView)findViewById(R.id.toolbar_title)).setText(good.getName());
+        ((TextView) findViewById(R.id.toolbar_title)).setText(good.getName());
 
         ImageView ivGood = findViewById(R.id.iv_image);
         Glide.with(this).load(good.getImgurl()).into(ivGood);
 
         Button btBorrow = findViewById(R.id.bt_borrow);
+        Button btDelete = findViewById(R.id.bt_delete);
         btBorrow.setOnClickListener(v -> showBorrowDialog());
-        if(User.getLoggedInUser().getUid() == good.getUid()) {
+        btDelete.setOnClickListener(v -> showDeleteDialog());
+        if (User.getLoggedInUser().getUid() == good.getUid()) {
             btBorrow.setVisibility(View.GONE);
+            btDelete.setVisibility(View.VISIBLE);
         }
         if (good.getStatus() == Constants.GOOD_STATUS_BORROWED) {
             btBorrow.setBackground(getDrawable(R.drawable.corner_button_grey));
@@ -91,19 +93,33 @@ public class GoodDetailActivity extends AppCompatActivity {
         TextView tvOwnerName = findViewById(R.id.tv_owner_name);
         TextView tvOwnerContact = findViewById(R.id.tv_owner_contact);
 
-        Api.get().findUserByUid(User.getLoggedInUser().getToken(),good.getUid())
+        Api.get().findUserByUid(User.getLoggedInUser().getToken(), good.getUid())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(findUserResponse -> {
-                    if(good.getType().equals(GOOD_TYPE_GOOD)) {
+                    if (good.getType().equals(GOOD_TYPE_GOOD)) {
                         tvOwnerName.setText(findUserResponse.getUser().getUsername());
                     } else {
                         tvOwnerName.setText(findUserResponse.getUser().getName());
                     }
-                    tvOwnerContact.setOnClickListener(v-> showContactDialog(this, findUserResponse.getUser()));
-                },e-> Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show());
+                    tvOwnerContact.setOnClickListener(v -> showContactDialog(this, findUserResponse.getUser()));
+                }, e -> Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show());
     }
 
+    @SuppressLint("CheckResult")
+    private void showDeleteDialog() {
+        new MaterialAlertDialogBuilder(this)
+                .setMessage("确认下架?")
+                .setPositiveButton("下架", (dialog, which) -> {
+
+                    Api.get().deleteGood(User.getLoggedInUser().getToken(), good.getGid())
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(basicResponse -> Toast.makeText(this, basicResponse.getMessage(), Toast.LENGTH_SHORT).show(),
+                                    e -> Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show());
+                }).setNegativeButton("取消", (dialog, which) -> dialog.dismiss())
+                .create().show();
+    }
 
 
     private Calendar startTime;
@@ -160,7 +176,7 @@ public class GoodDetailActivity extends AppCompatActivity {
                             .subscribe(applyResponse -> {
                                 Toast.makeText(this, applyResponse.getMessage(), Toast.LENGTH_SHORT).show();
                                 if (applyResponse.getCode() == 200) dialog.dismiss();
-                            },e-> Toast.makeText(this, "网络连接异常", Toast.LENGTH_SHORT).show());
+                            }, e -> Toast.makeText(this, "网络连接异常", Toast.LENGTH_SHORT).show());
                 } else {
                     Toast.makeText(this, "请填写申请信息", Toast.LENGTH_SHORT).show();
                 }

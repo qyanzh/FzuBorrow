@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -20,9 +21,11 @@ import com.seven.fzuborrow.ui.login.UserInfoActivity;
 
 public class MineFragment extends Fragment implements View.OnClickListener {
 
+    View root;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.cg_fragment_mine, container, false);
+        root = inflater.inflate(R.layout.cg_fragment_mine, container, false);
         getbind(root);
         return root;
     }
@@ -46,7 +49,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.Li_mine_borrow:
                 intent = new Intent(getContext(), MyBorrowActivity.class);
-                getContext().startActivity(intent);
+                startActivityForResult(intent,0);
                 break;
             case R.id.Li_mine_manager:
                 intent = new Intent(getContext(), MineManagerActivity.class);
@@ -67,4 +70,11 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getbind(root);
+    }
+
 }

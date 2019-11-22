@@ -20,7 +20,7 @@ public class ExampleUnitTest {
 
     @Before
     public void getToken() {
-        Api.get().login("zqy", "12345")
+        Api.get().login("czhhh", "123")
                 .doOnNext(response -> token = response.getToken()).blockingSubscribe();
     }
 
@@ -33,6 +33,13 @@ public class ExampleUnitTest {
 
     @Test
     public void deleteTest() {
+        Api.get().deleteGood(token,22L).subscribe();
+    }
 
+    @Test
+    public void rejectApplyTest() {
+        Api.get().findApply(token).blockingSubscribe();
+        Api.get().handleApply(token,Constants.APPLY_TYPE_REJECT,26,24).blockingSubscribe();
+        Api.get().findApply(token).blockingSubscribe();
     }
 }
