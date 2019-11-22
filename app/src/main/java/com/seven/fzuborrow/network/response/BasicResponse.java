@@ -1,6 +1,6 @@
 package com.seven.fzuborrow.network.response;
 
-public class RegisterResponse {
+public class BasicResponse {
     private int code;
     private String message;
 

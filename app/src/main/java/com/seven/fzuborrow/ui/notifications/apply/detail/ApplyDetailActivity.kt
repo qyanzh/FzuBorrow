@@ -35,7 +35,7 @@ class ApplyDetailActivity : AppCompatActivity() {
         }
 
         apply = intent.getParcelableExtra<Apply>("apply") ?: return
-        Api.get().findUser(User.getLoggedInUser().token, apply.uid.toLong())
+        Api.get().findUserByUid(User.getLoggedInUser().token, apply.uid.toLong())
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -104,7 +104,7 @@ class ApplyDetailActivity : AppCompatActivity() {
     }
 
     private fun checkFabVisibility() {
-        if (apply.status != Constants.APPLY_STATUS_PENDING) {
+        if (apply.status != APPLY_STATUS_PENDING || apply.pid.toLong() != User.getLoggedInUser().uid) {
             fab_ok.visibility = View.GONE
             fab_reject.visibility = View.GONE
         }

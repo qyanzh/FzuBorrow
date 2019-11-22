@@ -11,11 +11,12 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.nanchen.compresshelper.CompressHelper
 import com.seven.fzuborrow.Constants
 import com.seven.fzuborrow.R
 import com.seven.fzuborrow.data.User
 import com.seven.fzuborrow.network.Api
-import com.seven.fzuborrow.network.response.AddGoodResponse
+import com.seven.fzuborrow.network.response.BasicResponse
 import com.seven.fzuborrow.utils.convertImageUriToPath
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -72,11 +73,12 @@ class AddActivity : AppCompatActivity() {
         tab_layout.selectedTabPosition
         if (imagePath != null) {
             val file = File(imagePath)
-            val fileBody = file.asRequestBody("image/png".toMediaTypeOrNull())
-            val filePart = MultipartBody.Part.createFormData("file", file.name, fileBody)
+            val compressedFile = CompressHelper.getDefault(applicationContext).compressToFile(file)
+            val fileBody = compressedFile.asRequestBody("image/png".toMediaTypeOrNull())
+            val filePart = MultipartBody.Part.createFormData("file", compressedFile.name, fileBody)
             Api.get().uploadFile(User.getLoggedInUser().token, filePart, Constants.UPLOAD_TYPE_GOOD)
                 .subscribeOn(Schedulers.io())
-                .flatMap<AddGoodResponse> { uploadFileResponse ->
+                .flatMap<BasicResponse> { uploadFileResponse ->
                     Api.get().addGood(
                         User.getLoggedInUser().token,
                         et_title.text.toString(),

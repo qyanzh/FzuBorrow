@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.nanchen.compresshelper.CompressHelper
 import com.seven.fzuborrow.Constants
 import com.seven.fzuborrow.MainActivity
 import com.seven.fzuborrow.R
@@ -45,6 +46,7 @@ class UserInfoActivity : AppCompatActivity() {
 
         User.getLoggedInUser().apply {
             username?.let { et_username.setText(it) }
+            schoolid?.let { tv_schoolid.text = it }
             name?.let { et_name.setText(it) }
             department?.let { et_department.setText(it) }
             speciality?.let { et_speciality.setText(it) }
@@ -135,10 +137,11 @@ class UserInfoActivity : AppCompatActivity() {
                 imagePath = convertImageUriToPath(this, data)
                 Glide.with(this).load(imagePath).into(iv_avatar)
                 val file = File(imagePath)
-                val fileBody = file.asRequestBody("image/png".toMediaTypeOrNull())
-                val filePart = MultipartBody.Part.createFormData("file", file.name, fileBody)
+                val compressedFile = CompressHelper.getDefault(applicationContext).compressToFile(file)
+                val fileBody = compressedFile.asRequestBody("image/png".toMediaTypeOrNull())
+                val filePart = MultipartBody.Part.createFormData("file", compressedFile.name, fileBody)
                 Api.get()
-                    .uploadFile(User.getLoggedInUser().token, filePart, Constants.UPLOAD_TYPE_GOOD)
+                    .uploadFile(User.getLoggedInUser().token, filePart, Constants.UPLOAD_TYPE_AVATAR)
                     .subscribeOn(Schedulers.io())
                     .flatMap {
                         Api.get().userAvatarUpdate(User.getLoggedInUser().token, it.data.imgurl)

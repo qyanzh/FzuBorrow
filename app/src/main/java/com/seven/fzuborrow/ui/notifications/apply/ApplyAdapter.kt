@@ -18,7 +18,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.apply_item.view.*
 
-class ApplyAdapter(val listener:ApplyListener) :
+class ApplyAdapter(val listener:ApplyListener,val isOut:Boolean) :
     ListAdapter<Apply, RecyclerView.ViewHolder>(ApplyDiffCallback()) {
     val map = SparseArrayCompat<User>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -33,19 +33,21 @@ class ApplyAdapter(val listener:ApplyListener) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val apply = getItem(position)
+        var puid = if(isOut) apply.uid else apply.pid
+
         holder.itemView.apply {
-            if (map.containsKey(apply.uid)) {
-                val user = map[apply.uid]
+            if (map.containsKey(puid)) {
+                val user = map[puid]
                 tv_username.text = user?.username
-                Glide.with(this).load(user?.imgurl)
+                Glide.with(this).load(user?.imgurl).into(iv_avatar)
             } else {
-                Api.get().findUser(User.getLoggedInUser().token,apply.uid.toLong()).subscribeOn(Schedulers.io())
+                Api.get().findUserByUid(User.getLoggedInUser().token,puid.toLong()).subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe ({
-                        map.put(apply.uid,it.user)
-                        val user = map[apply.uid]
+                        map.put(puid,it.user)
+                        val user = map[puid]
                         tv_username.text = user?.username
-                        Glide.with(this).load(user?.imgurl)
+                        Glide.with(this).load(user?.imgurl).into(iv_avatar)
                     },{ Toast.makeText(this.context, "网络连接异常", Toast.LENGTH_SHORT).show()})
             }
             tv_message.text = apply.reason

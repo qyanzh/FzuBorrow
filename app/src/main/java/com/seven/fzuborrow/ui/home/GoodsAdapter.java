@@ -77,23 +77,19 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
         } else if (viewType == TYPE_HEADER) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.banner_item, parent, false);
             final HeaderViewHolder holder = new HeaderViewHolder(view);
-            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
-            layoutParams.setFullSpan(true);
-            holder.itemView.setLayoutParams(layoutParams);
             return holder;
         } else {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.load_item, parent, false);
             final FooterViewHolder holder = new FooterViewHolder(view);
-            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
-            layoutParams.setFullSpan(true);
-            holder.itemView.setLayoutParams(layoutParams);
             return holder;
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
         if (holder instanceof ItemViewHolder) {
+            layoutParams.setFullSpan(false);
             Good good = getItem(position);
             holder.itemView.setOnClickListener(v -> listener.onClick(good));
             Log.d(TAG, "onBindViewHolder: " + good.getName());
@@ -104,7 +100,9 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
             } else {
                 Glide.with(holder.itemView).load(R.drawable.banner_placeholder).into(((ItemViewHolder) holder).image);
             }
+            holder.itemView.setVisibility(View.VISIBLE);
         } else if (holder instanceof HeaderViewHolder) {
+            layoutParams.setFullSpan(true);
             ((HeaderViewHolder) holder).tabLayout.setOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
@@ -130,8 +128,10 @@ public class GoodsAdapter extends ListAdapter<Good, RecyclerView.ViewHolder> {
                 ((HeaderViewHolder) holder).bannerImage.setVisibility(View.VISIBLE);
             }
         } else {
+            layoutParams.setFullSpan(true);
             holder.itemView.setVisibility(View.GONE);
         }
+        holder.itemView.setLayoutParams(layoutParams);
     }
 
     static class ItemViewHolder extends RecyclerView.ViewHolder {

@@ -14,14 +14,19 @@ import com.seven.fzuborrow.data.Apply;
 import com.seven.fzuborrow.data.User;
 import com.seven.fzuborrow.network.Api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.seven.fzuborrow.Constants.APPLY_STATUS_FINISHED;
+import static com.seven.fzuborrow.Constants.APPLY_STATUS_USING;
+import static com.seven.fzuborrow.Constants.APPLY_STATUS_WAITING;
+
 public class MyBorrowActivity extends AppCompatActivity {
     private MyApplyAdapter adapter;
-    private List<Apply> list;
+    private List<Apply> list = new ArrayList<>();
 
     @SuppressLint("CheckResult")
     @Override
@@ -36,7 +41,14 @@ public class MyBorrowActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(findApplyResponse -> {
-                    adapter = new MyApplyAdapter(findApplyResponse.getApplyList(), this);
+                    for (Apply apply : findApplyResponse.getApplyList()) {
+                        if(apply.getStatus()==APPLY_STATUS_FINISHED
+                        ||apply.getStatus()== APPLY_STATUS_WAITING
+                        ||apply.getStatus()==APPLY_STATUS_USING) {
+                            list.add(apply);
+                        }
+                    }
+                    adapter = new MyApplyAdapter(list, this);
                     recyclerView.setAdapter(adapter);
                 }, e -> Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show());
 

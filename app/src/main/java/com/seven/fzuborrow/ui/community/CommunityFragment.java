@@ -48,7 +48,6 @@ public class CommunityFragment extends Fragment {
     private void subscribeUi() {
         discViewModel.getDiscs().observe(this, discs -> {
             adapter.submitList(discs);
-            Toast.makeText(getContext(), "刷新完成", Toast.LENGTH_SHORT).show();
             swipeRefreshLayout.setRefreshing(false);
         });
     }

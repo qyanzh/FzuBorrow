@@ -133,7 +133,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="32dp"
-                    android:text="031702420"
+                    tools:text="031702420"
                     android:textColor="#000"
                     android:textSize="16sp" />
 
@@ -186,7 +186,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="32dp"
-                    tools:text="计算机4班"
+                    tools:text="计算机"
                     android:textColor="#000"
                     android:textSize="16sp" />
 

@@ -31,9 +31,8 @@ public class ExampleUnitTest {
                 .subscribe();
     }
 
-
     @Test
-    public void updateTest() {
-        Api.get().userInfoUpdate(token,"zqy","123456","510").doOnNext(userUpdateResponse -> System.out.println(userUpdateResponse.getMessage())).subscribe();
+    public void deleteTest() {
+
     }
 }

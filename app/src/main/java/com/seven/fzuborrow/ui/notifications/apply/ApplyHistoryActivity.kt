@@ -25,10 +25,13 @@ class ApplyHistoryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_apply_history)
         var observable: Observable<FindApplyResponse>
+        var isOut: Boolean
         if (intent.getStringExtra("mode") == "my_apply") {
+            isOut = false
             toolbar_title.text = "我的申请"
             observable = Api.get().findApply(User.getLoggedInUser().token)
         } else {
+            isOut = true
             toolbar_title.text = "我的借出"
             observable = Api.get().findBeApply(User.getLoggedInUser().token)
         }
@@ -38,13 +41,22 @@ class ApplyHistoryActivity : AppCompatActivity() {
             title = ""
         }
 
+
+
         observable.subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 val fragmentList = listOf(
-                    ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_PENDING } as ArrayList<Apply>),
-                    ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_USING } as ArrayList<Apply>),
-                    ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_FINISHED } as ArrayList<Apply>)
+                    ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_PENDING } as ArrayList<Apply>,
+                        isOut),
+                    ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_USING } as ArrayList<Apply>,
+                        isOut),
+                    ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_WAITING } as ArrayList<Apply>,
+                        isOut),
+                    ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_REJECTED } as ArrayList<Apply>,
+                        isOut),
+                    ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_FINISHED } as ArrayList<Apply>,
+                        isOut)
                 )
                 view_pager.adapter = object :
                     FragmentPagerAdapter(
@@ -63,7 +75,9 @@ class ApplyHistoryActivity : AppCompatActivity() {
                         return when (position) {
                             0 -> "未处理"
                             1 -> "使用中"
-                            2 -> "已完成"
+                            2 -> "归还中"
+                            3 -> "已拒绝"
+                            4 -> "已完成"
                             else -> ""
                         }
                     }

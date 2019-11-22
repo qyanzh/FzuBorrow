@@ -1,22 +1,14 @@
 package com.seven.fzuborrow.network;
 
-import com.seven.fzuborrow.network.response.AddGoodResponse;
-import com.seven.fzuborrow.network.response.AddLikesResponse;
-import com.seven.fzuborrow.network.response.ApplyResponse;
-import com.seven.fzuborrow.network.response.CreateDiscResponse;
+import com.seven.fzuborrow.network.response.BasicResponse;
 import com.seven.fzuborrow.network.response.FindAllCommentResponse;
 import com.seven.fzuborrow.network.response.FindAllDiscResponse;
 import com.seven.fzuborrow.network.response.FindAllGoodsResponse;
 import com.seven.fzuborrow.network.response.FindApplyResponse;
 import com.seven.fzuborrow.network.response.FindGoodResponse;
 import com.seven.fzuborrow.network.response.FindUserResponse;
-import com.seven.fzuborrow.network.response.HandleApplyResponse;
 import com.seven.fzuborrow.network.response.LoginResponse;
-import com.seven.fzuborrow.network.response.PublishCommentResponse;
-import com.seven.fzuborrow.network.response.RegisterResponse;
-import com.seven.fzuborrow.network.response.ReturnGoodResponse;
 import com.seven.fzuborrow.network.response.UploadFileResponse;
-import com.seven.fzuborrow.network.response.UserUpdateResponse;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -33,7 +25,7 @@ public interface ApiInterface {
 
     @POST("user/register")
     @FormUrlEncoded
-    Observable<RegisterResponse> register(
+    Observable<BasicResponse> register(
             @Field("username") String username,
             @Field("password") String password,
             @Field("schoolid") String schoolid,
@@ -50,7 +42,7 @@ public interface ApiInterface {
 
     @POST("user/update")
     @FormUrlEncoded
-    Observable<UserUpdateResponse> userInfoUpdate(
+    Observable<BasicResponse> userInfoUpdate(
             @Header("XW-Token") String token,
             @Field("username") String username,
             @Field("name") String name,
@@ -64,14 +56,14 @@ public interface ApiInterface {
 
     @POST("user/update")
     @FormUrlEncoded
-    Observable<UserUpdateResponse> userAvatarUpdate(
+    Observable<BasicResponse> userAvatarUpdate(
             @Header("XW-Token") String token,
             @Field("imgurl") String url
     );//换头像
 
     @POST("user/update")
     @FormUrlEncoded
-    Observable<UserUpdateResponse> userPasswordUpdate(
+    Observable<BasicResponse> userPasswordUpdate(
             @Header("XW-Token") String token,
             @Field("password") String password
     );//换头像
@@ -80,13 +72,7 @@ public interface ApiInterface {
     Observable<FindUserResponse> findUser(
             @Header("XW-Token") String token
     );//查询当前用户资料
-
-    @POST("user/findUser")
-    @FormUrlEncoded
-    Observable<FindUserResponse> findUser(
-            @Header("XW-Token") String token,
-            @Field("uid") Long uid
-    );
+    
 
     @POST("user/findUserByUid")
     @FormUrlEncoded
@@ -103,7 +89,7 @@ public interface ApiInterface {
 
     @POST("good/addGood")
     @FormUrlEncoded
-    Observable<AddGoodResponse> addGood(
+    Observable<BasicResponse> addGood(
             @Header("XW-Token") String token,
             @Field("name") String name,
             @Field("type") String type,// Constants
@@ -127,7 +113,7 @@ public interface ApiInterface {
 
     @POST("request/apply")
     @FormUrlEncoded
-    Observable<ApplyResponse> applyGood(
+    Observable<BasicResponse> applyGood(
             @Header("XW-Token") String token,
             @Field("gid") long goodId,
             @Field("pid") long ownerId,
@@ -148,7 +134,7 @@ public interface ApiInterface {
 
     @POST("request/handleApply")
     @FormUrlEncoded
-    Observable<HandleApplyResponse> handleApply(
+    Observable<BasicResponse> handleApply(
             @Header("XW-Token") String token,
             @Field("type") int type,
             @Field("rid") long applyId,
@@ -157,14 +143,14 @@ public interface ApiInterface {
 
     @POST("request/returnThing")
     @FormUrlEncoded
-    Observable<ReturnGoodResponse> returnGood(
+    Observable<BasicResponse> returnGood(
             @Header("XW-Token") String token,
             @Field("rid") long applyId
     );
 
     @POST("request/confirmReturn")
     @FormUrlEncoded
-    Observable<ReturnGoodResponse> confirmReturn(
+    Observable<BasicResponse> confirmReturn(
             @Header("XW-Token") String token,
             @Field("rid") long applyId,
             @Field("type") int type
@@ -177,7 +163,7 @@ public interface ApiInterface {
     );//查看所有帖子
 
     @GET("community/createDisc")
-    Observable<CreateDiscResponse> createDisc(
+    Observable<BasicResponse> createDisc(
             @Header("XW-Token") String token,
             @Query("title") String title,
             @Query("username") String username,
@@ -192,7 +178,7 @@ public interface ApiInterface {
 
     @POST("community/publCommnet")
     @FormUrlEncoded
-    Observable<PublishCommentResponse> publishComment(
+    Observable<BasicResponse> publishComment(
             @Header("XW-Token") String token,
             @Field("did") long discId,
             @Field("username") String username,
@@ -200,7 +186,7 @@ public interface ApiInterface {
     );//发帖子回复
 
     @GET("community/addDiscLikes")
-    Observable<AddLikesResponse> addDiscLikes(
+    Observable<BasicResponse> addDiscLikes(
             @Header("XW-Token") String token,
             @Query("did") long discId
     );//喜欢帖子
@@ -212,6 +198,22 @@ public interface ApiInterface {
             @Part MultipartBody.Part file,
             @Part("type") int type
     );//传文件 1/2/3
+
+    @POST("good/deleteGood")
+    @FormUrlEncoded
+    Observable<BasicResponse> deleteGood(
+            @Header("XW-Token") String token,
+            @Field("gid") Long gid
+    );//下架
+
+
+    @POST("community/deleteDisc")
+    @FormUrlEncoded
+    Observable<BasicResponse> delteDisc(
+            @Header("XW-Token") String token,
+            @Field("gid") Long gid
+    );//下架
+
 
 
 }

@@ -32,10 +32,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.seven.fzuborrow.Constants.APPLY_STATUS_FINISHED;
-import static com.seven.fzuborrow.Constants.APPLY_STATUS_PENDING;
-import static com.seven.fzuborrow.Constants.APPLY_STATUS_REJECTED;
 import static com.seven.fzuborrow.Constants.APPLY_STATUS_USING;
-import static com.seven.fzuborrow.Constants.APPLY_STATUS_WATING;
+import static com.seven.fzuborrow.Constants.APPLY_STATUS_WAITING;
 
 public class MyApplyAdapter extends RecyclerView.Adapter<MyApplyAdapter.ViewHolder> {
 
@@ -82,8 +80,7 @@ public class MyApplyAdapter extends RecyclerView.Adapter<MyApplyAdapter.ViewHold
     private void showPhoneDialog() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(context)
                 .setView(R.layout.cg_dialog_phone)
-                .setPositiveButton("拨打", null)
-                .setNegativeButton("取消", null);
+                .setPositiveButton("拨打", null);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -120,37 +117,24 @@ public class MyApplyAdapter extends RecyclerView.Adapter<MyApplyAdapter.ViewHold
             intent.putExtra("good", good);
             context.startActivity(intent);
         });
-        holder.contact.setOnClickListener(v -> showPhoneDialog());
         holder.returnGood.setOnClickListener(v -> {
             Intent intent = new Intent(context, RestoreActivity.class).putExtra("apply", apply);
             context.startActivity(intent);
         });
 
 
-        if (apply.getStatus() == APPLY_STATUS_PENDING) {
-            holder.returnGood.setVisibility(View.GONE);
-            holder.contact.setVisibility(View.GONE);
-            holder.status.setText("审核中");
-            holder.status.setTextColor(Color.parseColor("#0594D7"));
-            holder.status_icon.setImageResource(R.drawable.cgh_item_weijiechu);
-        } else if (apply.getStatus() == APPLY_STATUS_USING) {
+        if (apply.getStatus() == APPLY_STATUS_USING) {
             holder.returnGood.setVisibility(View.VISIBLE);
             holder.status.setText("租借中");
             holder.status.setTextColor(Color.parseColor("#EB402F"));
             holder.status_icon.setImageResource(R.drawable.cgh_item_jieyongzhong);
         } else if (apply.getStatus() == APPLY_STATUS_FINISHED) {
+            holder.returnGood.setVisibility(View.GONE);
             holder.status_icon.setImageResource(R.drawable.cgh_item_yiguihuan);
             holder.status.setText("已归还");
             holder.status.setTextColor(Color.parseColor("#101010"));
-        } else if (apply.getStatus() == APPLY_STATUS_REJECTED) {
+        } else if (apply.getStatus() == APPLY_STATUS_WAITING) {
             holder.returnGood.setVisibility(View.GONE);
-            holder.contact.setVisibility(View.GONE);
-            holder.status.setText("已拒绝");
-            holder.status.setTextColor(Color.parseColor("#101010"));
-            holder.status_icon.setImageResource(R.drawable.cgh_item_weijiechu);
-        } else if (apply.getStatus() == APPLY_STATUS_WATING) {
-            holder.returnGood.setVisibility(View.GONE);
-            holder.contact.setVisibility(View.GONE);
             holder.status.setText("归还审核中");
             holder.status.setTextColor(Color.parseColor("#0594D7"));
             holder.status_icon.setImageResource(R.drawable.cgh_item_weijiechu);

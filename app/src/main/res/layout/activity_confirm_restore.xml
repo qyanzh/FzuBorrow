@@ -34,7 +34,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="#f2f2f2"
-        app:layout_constraintBottom_toTopOf="@+id/bt_return"
+        app:layout_constraintBottom_toTopOf="@+id/bt_confirm_return"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialToolbar">
@@ -60,7 +60,6 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/tv_good_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="32dp"
@@ -85,7 +84,7 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/tv_return_time"
+                    android:id="@+id/tv_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="32dp"
@@ -103,21 +102,12 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="上传图片"
-                    android:textSize="16sp" />
-
-
                 <ImageView
-                    android:id="@+id/iv_add_image"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:layout_marginTop="16dp"
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_add_photo"
+                    android:src="@drawable/banner_placeholder"
                     android:textColor="#000"
                     android:textSize="16sp" />
 
@@ -139,7 +129,6 @@
 
 
                 <RatingBar
-                    android:id="@+id/rating_bar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -147,13 +136,12 @@
                     android:numStars="5"
                     android:stepSize="1" />
 
-                <EditText
-                    android:id="@+id/et_evaluate"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:background="#f2f2f2"
                     android:gravity="top"
-                    android:hint="评价一下吧"
+                    android:hint="很好很好"
                     android:padding="16dp" />
 
             </LinearLayout>
@@ -172,14 +160,13 @@
                     android:text="损坏情况"
                     android:textSize="16sp" />
 
-                <EditText
-                    android:id="@+id/et_broke"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginTop="16dp"
                     android:background="#f2f2f2"
                     android:gravity="top"
-                    android:hint="无损坏可不填"
+                    android:hint="无"
                     android:padding="16dp" />
             </LinearLayout>
 
@@ -188,10 +175,10 @@
     </ScrollView>
 
     <Button
-        android:id="@+id/bt_return"
+        android:id="@+id/bt_confirm_return"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="提交归还信息"
+        android:text="确认对方已归还"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

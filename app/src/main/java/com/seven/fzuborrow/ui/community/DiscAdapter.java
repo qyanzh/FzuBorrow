@@ -9,6 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.collection.LongSparseArray;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,6 +31,8 @@ public class DiscAdapter extends ListAdapter<Disc, DiscAdapter.ViewHolder> {
     private SimpleDateFormat f = new SimpleDateFormat("MM月dd日 HH:mm", Locale.getDefault());
 
     private DiscClickListener listener;
+
+    private LongSparseArray<User> userMap = new LongSparseArray<>();
 
     DiscAdapter(DiscClickListener listener) {
         super(new DiffUtil.ItemCallback<Disc>() {
@@ -56,8 +59,19 @@ public class DiscAdapter extends ListAdapter<Disc, DiscAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Disc disc = getItem(position);
-        holder.tvUsername.setText(disc.getUsername());
-        Glide.with(holder.itemView).load(disc.getUseravatar()).into(holder.ivUserAvatar);
+        if (!userMap.containsKey(disc.getUid())) {
+            Api.get().findUserByUid(User.getLoggedInUser().getToken(),disc.getUid())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(findUserResponse -> {
+                        userMap.put(disc.getUid(),findUserResponse.getUser());
+                        holder.tvUsername.setText(userMap.get(disc.getUid()).getUsername());
+                        Glide.with(holder.itemView).load(userMap.get(disc.getUid()).getImgurl()).into(holder.ivUserAvatar);
+                    },e-> Toast.makeText(holder.itemView.getContext(), e.toString(), Toast.LENGTH_SHORT).show());
+        } else {
+            holder.tvUsername.setText(userMap.get(disc.getUid()).getUsername());
+            Glide.with(holder.itemView).load(userMap.get(disc.getUid()).getImgurl()).into(holder.ivUserAvatar);
+        }
         holder.tvPublishTime.setText(f.format(disc.getCtime() * 1000L));
         holder.tvDetail.setText(disc.getTitle());
         Glide.with(holder.itemView).load(disc.getImgurl()).into(holder.ivImage);

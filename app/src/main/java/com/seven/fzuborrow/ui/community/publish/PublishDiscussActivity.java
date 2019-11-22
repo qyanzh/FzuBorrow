@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.nanchen.compresshelper.CompressHelper;
 import com.seven.fzuborrow.Constants;
 import com.seven.fzuborrow.R;
 import com.seven.fzuborrow.data.User;
@@ -70,8 +71,9 @@ public class PublishDiscussActivity extends AppCompatActivity {
         String content = etContent.getText().toString();
         if (imagePath != null) {
             File file = new File(imagePath);
-            RequestBody fileBody = RequestBody.create(file, MediaType.parse("image/png"));
-            MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), fileBody);
+            File compressedFile = CompressHelper.getDefault(getApplicationContext()).compressToFile(file);
+            RequestBody fileBody = RequestBody.create(compressedFile, MediaType.parse("image/png"));
+            MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", compressedFile.getName(), fileBody);
             Api.get().uploadFile(User.getLoggedInUser().getToken(), filePart, Constants.UPLOAD_TYPE_DISC)
                     .subscribeOn(Schedulers.io())
                     .flatMap(uploadFileResponse -> Api.get().createDisc(User.getLoggedInUser().getToken(), content, User.getLoggedInUser().getUsername(), uploadFileResponse.getData().getImgurl()))
