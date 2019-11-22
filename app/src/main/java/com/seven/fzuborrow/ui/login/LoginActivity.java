@@ -1,8 +1,10 @@
 package com.seven.fzuborrow.ui.login;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
@@ -24,14 +26,23 @@ public class LoginActivity extends AppCompatActivity {
 
     TextInputEditText mAccountNumber;
     TextInputEditText mPassword;
+    SharedPreferences spf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_login);
+        spf = getSharedPreferences("user", Context.MODE_PRIVATE);
         mAccountNumber = findViewById(R.id.et_username);
         mPassword = findViewById(R.id.et_student_password);
+        mAccountNumber.setText(spf.getString("username", ""));
+        mPassword.setText(spf.getString("password", ""));
+        if(!getIntent().getBooleanExtra("relogin",false)) {
+            if(spf.contains("username")) {
+                onLoginClicked();
+            }
+        }
         Button btLogin = findViewById(R.id.bt_login);
         btLogin.setOnClickListener(v -> onLoginClicked());
         Button btRegister = findViewById(R.id.bt_register);
@@ -42,10 +53,9 @@ public class LoginActivity extends AppCompatActivity {
     private void onLoginClicked() {
         String username = mAccountNumber.getText().toString();
         String password = mPassword.getText().toString();
-        //TODO:自动登录
         if (username.isEmpty() || password.isEmpty()) {
-            username = "zqy";
-            password = "12345";
+            Toast.makeText(this, "请输入用户名和密码", Toast.LENGTH_SHORT).show();
+            return;
         }
         final User user = new User();
         Api.get().login(username, password)
@@ -59,6 +69,8 @@ public class LoginActivity extends AppCompatActivity {
                         User currentUser = findUserResponse.getUser();
                         currentUser.setToken(user.getToken());
                         User.setLoggedInUser(currentUser);
+                        spf.edit().putString("username", username)
+                                .putString("password", password).apply();
                         if (currentUser.getName() == null
                                 || currentUser.getDepartment() == null
                                 || currentUser.getSpeciality() == null

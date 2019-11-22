@@ -29,6 +29,7 @@ public class CommunityViewModel extends AndroidViewModel {
          refreshDisc();
      }
 
+    @SuppressLint("CheckResult")
     public void refreshDisc() {
         Api.get().findAllDisc(User.getLoggedInUser().getToken(),"").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.seven.fzuborrow.R;
 import com.seven.fzuborrow.data.User;
+import com.seven.fzuborrow.ui.login.LoginActivity;
 import com.seven.fzuborrow.ui.login.UserInfoActivity;
 
 public class MineFragment extends Fragment implements View.OnClickListener {
@@ -36,6 +37,7 @@ public class MineFragment extends Fragment implements View.OnClickListener {
         root.findViewById(R.id.Li_mine_manager).setOnClickListener(this);
         root.findViewById(R.id.Li_mine_borrow).setOnClickListener(this);
         root.findViewById(R.id.mine_setting).setOnClickListener(this);
+        root.findViewById(R.id.Li_relogin).setOnClickListener(this);
     }
 
     @Override
@@ -57,6 +59,11 @@ public class MineFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.mine_setting:
                 Toast.makeText(getContext(), "设置", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.Li_relogin:
+                User.setLoggedInUser(null);
+                startActivity(new Intent(getContext(), LoginActivity.class).putExtra("relogin",true));
+                getActivity().finish();
                 break;
         }
     }
