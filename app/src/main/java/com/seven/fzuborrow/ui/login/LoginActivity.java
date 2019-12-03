@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                             finish();
                         }
                     }
-                }, e -> Toast.makeText(this, "网络连接异常", Toast.LENGTH_SHORT).show());
+                }, e -> Toast.makeText(this, "账号密码有误", Toast.LENGTH_SHORT).show());
 
     }
 

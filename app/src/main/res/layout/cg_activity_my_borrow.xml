@@ -44,12 +44,18 @@
             android:textSize="18sp" />
     </FrameLayout>
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:id="@+id/manage_recyclerview"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:itemCount="20"
-        tools:listitem="@layout/cg_manager_item" />
+        android:layout_height="match_parent">
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:id="@+id/manage_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="20"
+            tools:listitem="@layout/cg_manager_item" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

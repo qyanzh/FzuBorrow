@@ -1,6 +1,6 @@
 package com.seven.fzuborrow.network;
 
-import android.util.Log;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -18,6 +18,7 @@ public class Api {
     private static HttpLoggingInterceptor logging = new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY);
 
     private static OkHttpClient client = new OkHttpClient.Builder()
+            .connectTimeout(5L, TimeUnit.SECONDS)
             .addInterceptor(logging)
             .build();
 

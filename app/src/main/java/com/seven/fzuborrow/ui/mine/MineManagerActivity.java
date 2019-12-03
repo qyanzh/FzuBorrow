@@ -73,7 +73,7 @@ public class MineManagerActivity extends AppCompatActivity {
                             roomList.add(good);
                         }
                     }
-                    adapter.submitList(roomList);
+                    adapter.submitList(goodList);
                 }, e -> Toast.makeText(this, e.toString(), Toast.LENGTH_SHORT).show());
     }
 

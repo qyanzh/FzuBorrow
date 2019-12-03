@@ -111,7 +111,7 @@ public class GoodDetailActivity extends AppCompatActivity {
         new MaterialAlertDialogBuilder(this)
                 .setMessage("确认下架?")
                 .setPositiveButton("下架", (dialog, which) -> {
-
+//                    Toast.makeText(this, "暂时关闭下架功能", Toast.LENGTH_SHORT).show();
                     Api.get().deleteGood(User.getLoggedInUser().getToken(), good.getGid())
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())

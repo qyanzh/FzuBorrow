@@ -42,4 +42,5 @@ public class ExampleUnitTest {
         Api.get().handleApply(token,Constants.APPLY_TYPE_REJECT,26,24).blockingSubscribe();
         Api.get().findApply(token).blockingSubscribe();
     }
+
 }

@@ -17,6 +17,7 @@ import com.seven.fzuborrow.data.User;
 import com.seven.fzuborrow.network.Api;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -42,9 +43,7 @@ public class HomeViewModel extends AndroidViewModel {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(findAllGoodsResponse -> {
-                    for (Good good : findAllGoodsResponse.getGoodList()) {
-                        Log.d(TAG, "getGoodsFromServer: "+good.getName());
-                    }
+                    Collections.reverse(findAllGoodsResponse.getGoodList());
                     mGoods.setValue(findAllGoodsResponse.getGoodList());
                 },e->  {
                     if(type.equals(Constants.GOOD_TYPE_GOOD)) {

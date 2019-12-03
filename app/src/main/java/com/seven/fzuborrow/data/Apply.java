@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import com.squareup.moshi.Json;
 
-import retrofit2.http.Field;
-
 public class Apply implements Parcelable {
     private int rid;
     private int uid;
