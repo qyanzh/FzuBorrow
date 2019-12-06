@@ -34,7 +34,7 @@ class NotificationsMenuAdapter(val list: List<NotificationsMenuItem>) :
         holder.icon.setImageDrawable(context.getDrawable(item.icon))
         holder.text.text = item.name
         if(item.notificationNums == 0) {
-//            holder.flag.visibility = View.INVISIBLE
+            holder.flag.visibility = View.INVISIBLE
         } else {
             holder.flag.visibility = View.VISIBLE
             holder.num.text = item.notificationNums.toString()

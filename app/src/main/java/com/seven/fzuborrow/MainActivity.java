@@ -1,5 +1,8 @@
 package com.seven.fzuborrow;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        createNotificationChannel();
         navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(this);
         viewPager = findViewById(R.id.view_pager);
@@ -57,6 +61,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 return 4;
             }
         });
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "新事务通知";
+            String description = "新的借出/借入事务";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel("10086", name, importance);
+            mChannel.setDescription(description);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(
+                    NOTIFICATION_SERVICE);
+            notificationManager.createNotificationChannel(mChannel);
+        }
     }
 
 
