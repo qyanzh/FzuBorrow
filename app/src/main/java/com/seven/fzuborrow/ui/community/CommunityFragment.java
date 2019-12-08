@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.seven.fzuborrow.R;
+import com.seven.fzuborrow.ui.community.detail.DiscDetailActivity;
 import com.seven.fzuborrow.ui.community.publish.PublishDiscussActivity;
 
 public class CommunityFragment extends Fragment {
@@ -33,7 +33,7 @@ public class CommunityFragment extends Fragment {
                 ViewModelProviders.of(this).get(CommunityViewModel.class);
         RecyclerView recyclerView = root.findViewById(R.id.recycler_view);
         adapter = new DiscAdapter(disc -> {
-            //TODO:帖子详情
+            startActivity(new Intent(getActivity(), DiscDetailActivity.class).putExtra("discId",disc.getDid()));
         });
         recyclerView.setAdapter(adapter);
         root.findViewById(R.id.bt_send_tiezi).setOnClickListener(v -> {

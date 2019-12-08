@@ -1,12 +1,14 @@
 package com.seven.fzuborrow.network.response;
 
 import com.seven.fzuborrow.data.Comment;
+import com.squareup.moshi.Json;
 
 import java.util.List;
 
 public class FindAllCommentResponse {
     private int code;
     private String message;
+    @Json(name = "data")
     private List<Comment> commentList;
 
     public int getCode() {

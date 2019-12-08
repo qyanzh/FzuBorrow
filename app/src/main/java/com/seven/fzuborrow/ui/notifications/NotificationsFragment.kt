@@ -62,7 +62,7 @@ class NotificationsFragment : Fragment() {
         val root =
             inflater.inflate(R.layout.fragment_notifications, container, false)
         root.recycler_view.adapter = adapter
-        getNotification()
+        //getNotification()
         return root
     }
 
