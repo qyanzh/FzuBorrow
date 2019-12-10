@@ -35,7 +35,7 @@ class ApplyHistoryActivity : AppCompatActivity() {
             title = ""
         }
         view_pager.adapter = object :
-            FragmentPagerAdapter(
+            FragmentStatePagerAdapter (
                 supportFragmentManager,
                 BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
             ) {
@@ -45,6 +45,10 @@ class ApplyHistoryActivity : AppCompatActivity() {
 
             override fun getCount(): Int {
                 return fragmentList.size
+            }
+
+            override fun getItemPosition(`object`: Any): Int {
+                return POSITION_NONE
             }
 
             override fun getPageTitle(position: Int): CharSequence? {
@@ -60,11 +64,15 @@ class ApplyHistoryActivity : AppCompatActivity() {
         }
         view_pager.offscreenPageLimit = 2
         tab_layout.setupWithViewPager(view_pager)
-        refreshList()
 
         swipe_refresh.setOnRefreshListener {
             refreshList()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refreshList()
     }
 
     val fragmentList = mutableListOf<Fragment>()
@@ -98,6 +106,7 @@ class ApplyHistoryActivity : AppCompatActivity() {
                         isOut)
                 ))
                 view_pager.adapter?.notifyDataSetChanged()
+                (view_pager.adapter as FragmentStatePagerAdapter)
                 view_pager.currentItem = currentPage
                 if (swipe_refresh.isRefreshing) {
                     swipe_refresh.isRefreshing = false

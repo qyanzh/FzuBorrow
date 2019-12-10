@@ -45,6 +45,7 @@ class ApplyDetailActivity : AppCompatActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 tv_username.text = it.user.username
+                tv_schoolid.text = it.user.schoolid
                 Glide.with(this).load(it.user.imgurl).into(iv_avatar)
                 tv_name.text = it.user.name
                 tv_department.text = it.user.department
