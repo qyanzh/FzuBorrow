@@ -1,6 +1,7 @@
 package com.seven.fzuborrow.network;
 
 import com.seven.fzuborrow.network.response.BasicResponse;
+import com.seven.fzuborrow.network.response.CreditRecordResponse;
 import com.seven.fzuborrow.network.response.FindAllCommentResponse;
 import com.seven.fzuborrow.network.response.FindAllDiscResponse;
 import com.seven.fzuborrow.network.response.FindAllGoodsResponse;
@@ -72,7 +73,11 @@ public interface ApiInterface {
     Observable<FindUserResponse> findUser(
             @Header("XW-Token") String token
     );//查询当前用户资料
-    
+
+    @POST("user/getCreditRecord")
+    Observable<CreditRecordResponse> getCreditRecord(
+            @Header("XW-Token") String token
+    );
 
     @POST("user/findUserByUid")
     @FormUrlEncoded
@@ -145,7 +150,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     Observable<BasicResponse> returnGood(
             @Header("XW-Token") String token,
-            @Field("rid") long applyId
+            @Field("rid") long applyId,
+            @Field("grade") int grade
     );
 
     @POST("request/confirmReturn")
@@ -153,7 +159,8 @@ public interface ApiInterface {
     Observable<BasicResponse> confirmReturn(
             @Header("XW-Token") String token,
             @Field("rid") long applyId,
-            @Field("type") int type
+            @Field("type") int type,
+            @Field("assess") int rate
     );
 
     @GET("community/findAllDisc")

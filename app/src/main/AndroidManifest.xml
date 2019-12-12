@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.community.detail.DiscDetailActivity"></activity>
+        <activity android:name=".ui.notifications.statistics.StatisticsActivity" />
+        <activity android:name=".ui.mine.MyCreditActivity" />
+        <activity android:name=".ui.community.detail.DiscDetailActivity" />
         <activity android:name=".ui.mine.restore.ConfirmRestoreActivity" />
         <activity android:name=".ui.login.UserInfoActivity" />
         <activity android:name=".ui.mine.restore.RestoreActivity" />
@@ -24,10 +26,8 @@
         <activity android:name=".ui.home.add.AddActivity" />
         <activity android:name=".ui.home.search.GoodSearchActivity" />
         <activity android:name=".ui.notifications.apply.ApplyHistoryActivity" />
-        <activity android:name=".ui.notifications.apply.MyApplyActivity" />
         <activity android:name=".ui.community.publish.PublishDiscussActivity" />
         <activity android:name=".ui.mine.MyBorrowDetail" />
-        <activity android:name=".ui.mine.MyCreditActivity" />
         <activity android:name=".ui.mine.MineManagerActivity" />
         <activity android:name=".ui.mine.MyBorrowActivity" />
         <activity android:name=".ui.home.detail.GoodDetailActivity" />

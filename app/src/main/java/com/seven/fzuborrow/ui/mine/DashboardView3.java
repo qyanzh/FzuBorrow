@@ -79,11 +79,11 @@ public class DashboardView3 extends View {
         mRectText = new Rect();
         mPath = new Path();
 
-        mBgColors = new int[]{ContextCompat.getColor(getContext(), R.color.colorAccent),
-                ContextCompat.getColor(getContext(), R.color.colorPrimary),
-                ContextCompat.getColor(getContext(), R.color.pickerview_timebtn_pre),
-                ContextCompat.getColor(getContext(), R.color.design_default_color_error),
-                ContextCompat.getColor(getContext(), R.color.pickerview_bgColor_overlay)};
+        mBgColors = new int[]{ContextCompat.getColor(getContext(), R.color.color_red),
+                ContextCompat.getColor(getContext(), R.color.color_orange),
+                ContextCompat.getColor(getContext(), R.color.color_yellow),
+                ContextCompat.getColor(getContext(), R.color.color_green),
+                ContextCompat.getColor(getContext(), R.color.color_blue)};
     }
 
     @Override

@@ -4,12 +4,16 @@
     <color name="colorPrimaryDark">#FAE160</color>
     <color name="colorAccent">#FAE160</color>
 
-    <color name="lightskyblue">#87cefa</color><!--亮天蓝色 -->
-    <color name="orangered">#ff4500</color><!--红橙色 -->
 
-    <color name="lemonchiffon">#fffacd</color><!--柠檬绸色 -->
-    <color name="green">#008000</color><!--绿色 -->
+    <color name="color_red">#FF5722</color>
+    <color name="color_orange">#FF9800</color>
+    <color name="color_yellow">#FFC107</color>
+    <color name="color_green">#3FB830</color>
+    <color name="color_blue">#00BAED</color>
+    <color name="color_dark">#263238</color>
+    <color name="color_dark_light">#455A64</color>
+    <color name="color_light">#ECEFF1</color>
+    <color name="color_white">#fff</color>
 
-    <color name="teal">#FFFFFF</color><!--水鸭色 -->
-    <color name="turquoise">#40e0d0</color><!--青绿色 -->
+    <color name="black_overlay">#66000000</color>
 </resources>

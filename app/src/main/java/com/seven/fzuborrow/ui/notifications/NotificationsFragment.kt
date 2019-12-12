@@ -9,6 +9,7 @@ import android.content.Context.NOTIFICATION_SERVICE
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import com.seven.fzuborrow.R
 import com.seven.fzuborrow.data.User
 import com.seven.fzuborrow.network.Api
 import com.seven.fzuborrow.ui.notifications.apply.ApplyHistoryActivity
+import com.seven.fzuborrow.ui.notifications.statistics.StatisticsActivity
 import kotlinx.android.synthetic.main.fragment_notifications.view.*
 import java.lang.Thread.sleep
 
@@ -47,7 +49,10 @@ class NotificationsFragment : Fragment() {
                 )
             )
         },
-        NotificationsMenuItem("数据分析", R.drawable.ic_statistics_80dp)
+        NotificationsMenuItem("数据统计", R.drawable.ic_statistics_80dp)
+        {
+            startActivity(Intent(context,StatisticsActivity::class.java))
+        }
     )
     val adapter = NotificationsMenuAdapter(list)
 
@@ -66,75 +71,48 @@ class NotificationsFragment : Fragment() {
         return root
     }
 
-    var alive = true
-    override fun onDestroy() {
-        super.onDestroy()
-        alive = false
-    }
-
-    override fun onResume() {
-        super.onResume()
-        alive = true
-    }
-
-    override fun onPause() {
-        super.onPause()
-        alive = false
-    }
 
     @SuppressLint("CheckResult")
     private fun getNotification() {
         val spf = activity?.getSharedPreferences("notification", 0)!!
         Thread {
-            while (alive) {
+            while (true) {
                 Api.get().findBeApply(User.getLoggedInUser().token).subscribe({
-                    var readed = spf.getString("readed_be_apply", "")!!.run {
-                        if (this.isBlank()) {
-                            listOf()
-                        } else {
-                            this.split(" ").map { it.toInt() }
-                        }
-                    }
+                    var readed = spf.getStringSet("readed_be_apply", setOf())
                     val pendding =
                         it.applyList.filter { it.status == Constants.APPLY_STATUS_PENDING }
-                            .map { it.pid }
-                    val unreaded = pendding - readed
+                            .map { it.pid.toString() }.toSet()
+                    val unreaded = pendding.subtract(readed!!)
                     if (unreaded.isNotEmpty()) {
                         sendNotification(unreaded, "be_apply")
+                        readed.addAll(unreaded)
+                        spf.edit().putStringSet("readed_be_apply", readed).commit()
                     }
-                    readed = (readed + unreaded).toMutableList()
-                    spf.edit().putString("readed_be_apply", readed.joinToString { " " }).apply()
                 }, { e -> e.printStackTrace() })
                 sleep(5000)
             }
         }.start()
 
         Thread {
-            while (alive) {
+            while (true) {
                 Api.get().findApply(User.getLoggedInUser().token).subscribe({
-                    var readed = spf.getString("readed_apply", "")!!.run {
-                        if (this.isBlank()) {
-                            listOf()
-                        } else {
-                            this.split(" ").map { it.toInt() }
-                        }
-                    }
+                    var readed = spf.getStringSet("readed_apply", setOf())
                     val pendding =
                         it.applyList.filter { it.status == Constants.APPLY_STATUS_USING || it.status == Constants.APPLY_STATUS_REJECTED }
-                            .map { it.pid }
-                    val unreaded = pendding - readed
+                            .map { it.pid.toString() }.toSet()
+                    val unreaded = pendding.subtract(readed!!)
                     if (unreaded.isNotEmpty()) {
                         sendNotification(unreaded, "apply")
+                        readed.addAll(unreaded)
+                        spf.edit().putStringSet("readed_apply", readed).commit()
                     }
-                    readed = (readed + unreaded).toMutableList()
-                    spf.edit().putString("readed_apply", readed.joinToString { " " }).apply()
                 }, { e -> e.printStackTrace() })
                 sleep(5000)
             }
         }.start()
     }
 
-    private fun sendNotification(unreaded: List<Int>, type: String) {
+    private fun sendNotification(unreaded: Set<String>, type: String) {
         if (type == "be_apply") {
             list[2].notificationNums = unreaded.size
             showNotification("有新的租借请求", "点击查看")

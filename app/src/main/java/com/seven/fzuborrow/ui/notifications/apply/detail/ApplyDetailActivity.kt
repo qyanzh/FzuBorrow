@@ -50,6 +50,7 @@ class ApplyDetailActivity : AppCompatActivity() {
                 tv_name.text = it.user.name
                 tv_department.text = it.user.department
                 tv_class.text = it.user.speciality + it.user.clazz
+                tv_user_credit.text = "信用分" + it.user.credit.toString()
             }, {
                 it.printStackTrace()
                 Toast.makeText(this, "网络异常", Toast.LENGTH_SHORT).show()

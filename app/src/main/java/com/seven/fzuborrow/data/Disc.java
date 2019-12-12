@@ -1,6 +1,6 @@
 package com.seven.fzuborrow.data;
 
-public class Disc {
+public class Disc implements Comparable<Disc>{
     private int did;
     private long ctime;
     private String title;
@@ -10,6 +10,15 @@ public class Disc {
     private String username;
     private String useravatar;
     private int counts;
+    private int grade;
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
 
     public int getDid() {
         return did;
@@ -89,5 +98,14 @@ public class Disc {
 
     public void setCounts(int counts) {
         this.counts = counts;
+    }
+
+    @Override
+    public int compareTo(Disc o) {
+        if(o.getGrade() != this.getGrade()) {
+            return o.getGrade() - this.getGrade();
+        } else {
+            return (int) (o.getCtime() - this.getCtime());
+        }
     }
 }

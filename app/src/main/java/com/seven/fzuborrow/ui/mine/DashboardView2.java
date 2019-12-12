@@ -101,11 +101,12 @@ public class DashboardView2 extends View {
         mRectText = new Rect();
 
         mTexts = new String[]{"350", "较差", "550", "中等", "600", "良好", "650", "优秀", "700", "极好", "950"};
-        mBgColors = new int[]{ContextCompat.getColor(getContext(), R.color.orangered),
-                ContextCompat.getColor(getContext(), R.color.colorPrimary),
-                ContextCompat.getColor(getContext(), R.color.teal),
-                ContextCompat.getColor(getContext(), R.color.turquoise),
-                ContextCompat.getColor(getContext(), R.color.lightskyblue)};
+        mBgColors = new int[]{ContextCompat.getColor(getContext(), R.color.color_red),
+                ContextCompat.getColor(getContext(), R.color.color_orange),
+                ContextCompat.getColor(getContext(), R.color.color_yellow),
+                ContextCompat.getColor(getContext(), R.color.color_green),
+                ContextCompat.getColor(getContext(), R.color.color_blue)};
+        mBackgroundColor = mBgColors[0];
         mBackgroundColor = mBgColors[0];
     }
 

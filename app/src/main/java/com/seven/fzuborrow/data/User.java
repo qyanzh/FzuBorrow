@@ -42,6 +42,23 @@ public class User {
     private String speciality;
     @Json(name = "cls")
     private String clazz;//班级
+    private Integer credit;
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Integer getCredit() {
+        return 650+credit;
+    }
+
+    public void setCredit(Integer credit) {
+        this.credit = credit;
+    }
 
     private String token;
 

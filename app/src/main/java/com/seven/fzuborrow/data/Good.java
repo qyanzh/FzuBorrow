@@ -14,6 +14,20 @@ public class Good implements Parcelable {
     private String name;        //物品的名字
     private String detail;      // 物品的详细说明
 
+    private Float grade;
+
+    public Float getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Float grade) {
+        this.grade = grade;
+    }
+
+    public static Creator<Good> getCREATOR() {
+        return CREATOR;
+    }
+
     public Good() {
     }
 

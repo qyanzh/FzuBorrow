@@ -13,6 +13,7 @@ import com.seven.fzuborrow.network.Api
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_restore.*
+import kotlin.math.roundToInt
 
 class RestoreActivity : AppCompatActivity() {
 
@@ -28,10 +29,12 @@ class RestoreActivity : AppCompatActivity() {
         }
 
         bt_return.setOnClickListener {
+            val rating = rating_bar.rating.roundToInt()
             Api.get()
                 .returnGood(
                     User.getLoggedInUser().token,
-                    intent.getParcelableExtra<Apply>("apply")!!.rid.toLong()
+                    intent.getParcelableExtra<Apply>("apply")!!.rid.toLong(),
+                    rating
                 )
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -40,7 +43,6 @@ class RestoreActivity : AppCompatActivity() {
                     bt_return.visibility = View.GONE
                 }, { Toast.makeText(this, it.toString(), Toast.LENGTH_SHORT).show() })
         }
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
