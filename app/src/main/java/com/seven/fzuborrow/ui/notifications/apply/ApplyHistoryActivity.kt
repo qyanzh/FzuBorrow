@@ -2,6 +2,7 @@ package com.seven.fzuborrow.ui.notifications.apply
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -93,6 +94,14 @@ class ApplyHistoryActivity : AppCompatActivity() {
                 val currentPage = view_pager.currentItem
                 fragmentList.clear()
                 view_pager.adapter?.notifyDataSetChanged()
+                val spf = getSharedPreferences("notification", 0)!!
+                val name = if(isOut)"readed_be_apply" else "readed_apply"
+                spf.edit().putStringSet(name, it.applyList.map { it.rid.toString() }.toSet()).commit()
+
+                Log.d(
+                    "ApplyHistoryActivity", "refreshList: " +
+                            it.applyList.map { it.grade }
+                )
                 fragmentList.addAll(listOf(
                     ApplyFragment.newInstance(it.applyList.filter { it.status == APPLY_STATUS_PENDING } as ArrayList<Apply>,
                         isOut),

@@ -10,6 +10,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory;
 
 public class Api {
 
+    public static final String baseURL = "http://49.235.150.59:8080/rusha/";
+
     private Api() {
     }
 
@@ -24,7 +26,7 @@ public class Api {
 
     private static Retrofit retrofit = new Retrofit.Builder()
             .client(client)
-            .baseUrl("http://49.235.150.59:8080/jiebei/")
+            .baseUrl(baseURL)
             .addConverterFactory(MoshiConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build();

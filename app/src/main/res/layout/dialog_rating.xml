@@ -4,6 +4,9 @@
     android:layout_height="wrap_content">
 
     <RatingBar
+        style="?attr/ratingBarStyleIndicator"
+        android:isIndicator="false"
+        android:theme="@style/RatingBar"
         android:id="@+id/dialog_rating_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

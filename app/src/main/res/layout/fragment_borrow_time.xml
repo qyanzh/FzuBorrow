@@ -14,7 +14,6 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
-        android:src="@drawable/bg_statistic_4"
         tools:layout_editor_absoluteX="204dp"
         tools:layout_editor_absoluteY="108dp" />
 

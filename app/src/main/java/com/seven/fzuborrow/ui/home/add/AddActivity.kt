@@ -3,26 +3,25 @@ package com.seven.fzuborrow.ui.home.add
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.luck.picture.lib.PictureSelector
+import com.luck.picture.lib.PictureSelector.obtainMultipleResult
+import com.luck.picture.lib.config.PictureMimeType
 import com.nanchen.compresshelper.CompressHelper
 import com.seven.fzuborrow.Constants
 import com.seven.fzuborrow.R
 import com.seven.fzuborrow.data.User
 import com.seven.fzuborrow.network.Api
 import com.seven.fzuborrow.network.response.BasicResponse
-import com.seven.fzuborrow.utils.convertImageUriToPath
-import com.seven.fzuborrow.utils.getPath
-import com.zhihu.matisse.Matisse
-import com.zhihu.matisse.MimeType
-import com.zhihu.matisse.engine.impl.GlideEngine
+import com.seven.fzuborrow.utils.GlideEngine
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_add.*
@@ -108,22 +107,22 @@ class AddActivity : AppCompatActivity() {
     }
 
     private fun pickImage() {
-        Matisse.from(this)
-            .choose(MimeType.ofAll())
-            .countable(false)
-            .maxSelectable(9)
-            .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-            .thumbnailScale(0.85f)
-            .imageEngine(GlideEngine())
-            .showPreview(false)
-            .forResult(0)
+
+        PictureSelector.create(this)
+            .openGallery(PictureMimeType.ofImage())
+            .loadImageEngine(GlideEngine.createGlideEngine()) // 请参考Demo GlideEngine.java
+            .forResult(0);
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             0 -> if (data != null) {
-                imagePath = getPath(this, Matisse.obtainResult(data)[0])
+                imagePath = obtainMultipleResult(data)[0].path
+                Log.d(
+                    "AddActivity", "onActivityResult: " +
+                            imagePath
+                )
                 Glide.with(this).load(imagePath).into(iv_add_image)
             }
         }

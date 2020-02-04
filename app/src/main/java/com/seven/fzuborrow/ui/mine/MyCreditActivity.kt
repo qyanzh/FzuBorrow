@@ -18,7 +18,14 @@ class MyCreditActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_my_credit)
-        dv_credit.setCreditValueWithAnim(User.getLoggedInUser().credit)
+        Api.get().findUserByUid(User.getLoggedInUser().token, User.getLoggedInUser().uid)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                dv_credit.setCreditValueWithAnim(it.user.credit)
+            }, {
+                Toast.makeText(this, it.message, Toast.LENGTH_SHORT).show()
+            })
         Api.get().getCreditRecord(User.getLoggedInUser().token)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())

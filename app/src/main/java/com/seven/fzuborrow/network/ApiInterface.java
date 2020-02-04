@@ -174,7 +174,8 @@ public interface ApiInterface {
             @Header("XW-Token") String token,
             @Query("title") String title,
             @Query("username") String username,
-            @Query("imgurl") String imgurl
+            @Query("imgurl") String imgurl,
+            @Query("grade") int grade
     );
 
     @GET("community/findAllComment")
@@ -218,7 +219,7 @@ public interface ApiInterface {
     @FormUrlEncoded
     Observable<BasicResponse> delteDisc(
             @Header("XW-Token") String token,
-            @Field("gid") Long gid
+            @Field("did") Long did
     );//下架
 
 

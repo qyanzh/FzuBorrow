@@ -80,7 +80,7 @@ public class PublishDiscussActivity extends AppCompatActivity {
             MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", compressedFile.getName(), fileBody);
             Api.get().uploadFile(User.getLoggedInUser().getToken(), filePart, Constants.UPLOAD_TYPE_DISC)
                     .subscribeOn(Schedulers.io())
-                    .flatMap(uploadFileResponse -> Api.get().createDisc(User.getLoggedInUser().getToken(), content, User.getLoggedInUser().getUsername(), uploadFileResponse.getData().getImgurl()))
+                    .flatMap(uploadFileResponse -> Api.get().createDisc(User.getLoggedInUser().getToken(), content, User.getLoggedInUser().getUsername(), uploadFileResponse.getData().getImgurl(),0))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(createDiscResponse -> {
                         Toast.makeText(this, createDiscResponse.getMessage(), Toast.LENGTH_SHORT).show();

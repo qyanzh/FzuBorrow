@@ -34,9 +34,9 @@ public class CommunityViewModel extends AndroidViewModel {
         Api.get().findAllDisc(User.getLoggedInUser().getToken(),"").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(findAllDiscResponse -> {
-                    Collections.sort(findAllDiscResponse.getDiscList(), (o1, o2) -> (int)(o2.getCtime()-o1.getCtime()));
+                    Collections.sort(findAllDiscResponse.getDiscList());
                     discs.setValue(findAllDiscResponse.getDiscList());
-                },e-> Toast.makeText(getApplication(), "网络连接异常", Toast.LENGTH_SHORT).show());
+                },e-> e.printStackTrace());
     }
 
     public CommunityViewModel(@NonNull Application application) {

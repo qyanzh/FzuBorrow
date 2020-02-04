@@ -53,7 +53,7 @@ public class User {
     }
 
     public Integer getCredit() {
-        return 650+credit;
+        return credit;
     }
 
     public void setCredit(Integer credit) {
@@ -93,7 +93,7 @@ public class User {
             if (imgurl.startsWith("http")) {
                 return imgurl;
             } else {
-                return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
+                return Api.baseURL + "img/get?url=" + imgurl;
             }
         } else {
             return null;

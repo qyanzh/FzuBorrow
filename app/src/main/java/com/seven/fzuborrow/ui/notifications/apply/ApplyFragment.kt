@@ -4,22 +4,16 @@ package com.seven.fzuborrow.ui.notifications.apply
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.seven.fzuborrow.Constants
 import com.seven.fzuborrow.R
 import com.seven.fzuborrow.data.Apply
-import com.seven.fzuborrow.data.User
-import com.seven.fzuborrow.network.Api
 import com.seven.fzuborrow.ui.mine.restore.ConfirmRestoreActivity
 import com.seven.fzuborrow.ui.notifications.apply.detail.ApplyDetailActivity
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 
 class ApplyFragment : Fragment() {

@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 
 import com.seven.fzuborrow.R
+import kotlinx.android.synthetic.main.fragment_borrow_out_time.view.*
 
 /**
  * A simple [Fragment] subclass.
@@ -19,7 +21,9 @@ class BorrowOutTimeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_borrow_out_time, container, false)
+        val root = inflater.inflate(R.layout.fragment_borrow_out_time, container, false)
+        Glide.with(this).load(R.drawable.bg_statistic_5).into(root.imageView2)
+        return root
     }
 
 

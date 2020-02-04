@@ -26,6 +26,8 @@ public class Apply implements Parcelable {
     private String response;
 
     private int pid;
+    private Float grade;
+
 
     protected Apply(Parcel in) {
         rid = in.readInt();
@@ -38,6 +40,11 @@ public class Apply implements Parcelable {
         status = in.readInt();
         response = in.readString();
         pid = in.readInt();
+        if (in.readByte() == 0) {
+            grade = null;
+        } else {
+            grade = in.readFloat();
+        }
     }
 
     @Override
@@ -52,6 +59,12 @@ public class Apply implements Parcelable {
         dest.writeInt(status);
         dest.writeString(response);
         dest.writeInt(pid);
+        if (grade == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeFloat(grade);
+        }
     }
 
     @Override
@@ -70,6 +83,16 @@ public class Apply implements Parcelable {
             return new Apply[size];
         }
     };
+
+    public Float getGrade() {
+        return grade;
+    }
+
+    public void setGrade(Float grade) {
+        this.grade = grade;
+    }
+
+
 
     public int getRid() {
         return rid;
@@ -164,6 +187,7 @@ public class Apply implements Parcelable {
                 ", status=" + status +
                 ", response='" + response + '\'' +
                 ", pid=" + pid +
+                ", grade=" + grade +
                 '}';
     }
 }

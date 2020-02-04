@@ -65,4 +65,6 @@ dependencies {
 
     implementation 'com.zhihu.android:matisse:0.5.3-beta3'
 
+    implementation 'com.github.LuckSiege.PictureSelector:picture_library:v2.4.3'
+
 }

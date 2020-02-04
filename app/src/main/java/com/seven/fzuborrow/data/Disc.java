@@ -1,5 +1,7 @@
 package com.seven.fzuborrow.data;
 
+import com.seven.fzuborrow.network.Api;
+
 public class Disc implements Comparable<Disc>{
     private int did;
     private long ctime;
@@ -10,13 +12,13 @@ public class Disc implements Comparable<Disc>{
     private String username;
     private String useravatar;
     private int counts;
-    private int grade;
+    private Integer grade;
 
-    public int getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
     }
 
@@ -62,7 +64,7 @@ public class Disc implements Comparable<Disc>{
 
     public String getImgurl() {
         if (imgurl != null) {
-            return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
+            return Api.baseURL + "img/get?url=" + imgurl;
         } else {
             return null;
         }
@@ -82,7 +84,7 @@ public class Disc implements Comparable<Disc>{
 
     public String getUseravatar() {
         if(useravatar!=null) {
-            return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
+            return Api.baseURL + "img/get?url=" + imgurl;
         } else {
             return null;
         }
@@ -102,7 +104,7 @@ public class Disc implements Comparable<Disc>{
 
     @Override
     public int compareTo(Disc o) {
-        if(o.getGrade() != this.getGrade()) {
+        if(o.getGrade()!=null && this.getGrade()!=null && !o.getGrade().equals(this.getGrade())) {
             return o.getGrade() - this.getGrade();
         } else {
             return (int) (o.getCtime() - this.getCtime());

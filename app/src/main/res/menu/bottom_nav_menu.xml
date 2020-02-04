@@ -7,9 +7,10 @@
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_home" />
 
+
     <item
         android:orderInCategory="1"
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_community"
         android:icon="@drawable/ic_dashboard_black_24dp"
         android:title="@string/title_community" />
 

@@ -3,6 +3,8 @@ package com.seven.fzuborrow.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.seven.fzuborrow.network.Api;
+
 
 public class Good implements Parcelable {
     private long gid;            //物品的id
@@ -106,7 +108,7 @@ public class Good implements Parcelable {
             if(imgurl.startsWith("http")) {
                 return imgurl;
             } else {
-                return "http://49.235.150.59:8080/jiebei/img/get?url=" + imgurl;
+                return Api.baseURL + "img/get?url=" + imgurl;
             }
         } else {
             return null;

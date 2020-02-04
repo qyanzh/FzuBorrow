@@ -52,6 +52,8 @@ public class MyBorrowActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(findApplyResponse -> {
+                    list.clear();
+                    adapter.notifyDataSetChanged();
                     for (Apply apply : findApplyResponse.getApplyList()) {
                         if(apply.getStatus()==APPLY_STATUS_FINISHED
                         ||apply.getStatus()== APPLY_STATUS_WAITING

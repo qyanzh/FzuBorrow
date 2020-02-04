@@ -13,6 +13,8 @@ import com.seven.fzuborrow.network.Api
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_restore.*
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.roundToInt
 
 class RestoreActivity : AppCompatActivity() {
@@ -28,12 +30,18 @@ class RestoreActivity : AppCompatActivity() {
             title = ""
         }
 
+        val apply = intent.getParcelableExtra<Apply>("apply")!!
+        tv_time.text = SimpleDateFormat("MM-dd HH:mm", Locale.getDefault()).format(Date())
+        Api.get().findGood(User.getLoggedInUser().token, apply.gid.toLong())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ tv_good_name.text = it.good.name }, { e -> e.printStackTrace() })
         bt_return.setOnClickListener {
             val rating = rating_bar.rating.roundToInt()
             Api.get()
                 .returnGood(
                     User.getLoggedInUser().token,
-                    intent.getParcelableExtra<Apply>("apply")!!.rid.toLong(),
+                    apply.rid.toLong(),
                     rating
                 )
                 .subscribeOn(Schedulers.io())

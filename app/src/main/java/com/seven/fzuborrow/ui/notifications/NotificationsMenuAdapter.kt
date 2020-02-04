@@ -1,6 +1,7 @@
 package com.seven.fzuborrow.ui.notifications
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,10 @@ class NotificationsMenuAdapter(val list: List<NotificationsMenuItem>) :
         holder.itemView.setOnClickListener { item.clickListener.invoke() }
         holder.icon.setImageDrawable(context.getDrawable(item.icon))
         holder.text.text = item.name
+        Log.d(
+            "NotificationsMenuAdapte", "onBindViewHolder: " +
+                    ""
+        )
         if(item.notificationNums == 0) {
             holder.flag.visibility = View.INVISIBLE
         } else {

@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.widget.RatingBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -17,9 +16,12 @@ import com.seven.fzuborrow.network.Api
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_confirm_restore.*
+import kotlinx.android.synthetic.main.activity_confirm_restore.tv_good_name
+import kotlinx.android.synthetic.main.activity_confirm_restore.tv_time
 import kotlinx.android.synthetic.main.activity_restore.toolbar
 import kotlinx.android.synthetic.main.dialog_rating.*
-import kotlinx.android.synthetic.main.dialog_rating.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.roundToInt
 
 class ConfirmRestoreActivity : AppCompatActivity() {
@@ -33,7 +35,15 @@ class ConfirmRestoreActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             title = ""
         }
-        apply = intent.getParcelableExtra<Apply>("apply")!!
+        apply = intent.getParcelableExtra("apply")!!
+
+        Api.get().findGood(User.getLoggedInUser().token, apply.gid.toLong())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ tv_good_name.text = it.good.name }, { e -> e.printStackTrace() })
+        tv_time.text = SimpleDateFormat("MM-dd HH:mm", Locale.getDefault()).format(Date())
+
+        rating_bar.rating = apply.grade
         if (apply.pid.toLong() != User.getLoggedInUser().uid) {
             bt_confirm_return.visibility = View.GONE
         }

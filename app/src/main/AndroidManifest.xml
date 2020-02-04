@@ -32,7 +32,7 @@
         <activity android:name=".ui.mine.MyBorrowActivity" />
         <activity android:name=".ui.home.detail.GoodDetailActivity" />
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name=".ui.login.LoginActivAity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

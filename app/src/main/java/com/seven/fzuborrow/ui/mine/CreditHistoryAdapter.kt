@@ -36,7 +36,7 @@ class CreditHistoryAdapter(val list: List<CreditHistory>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = list[position]
         holder.reasonScore.text = item.reason + (if(item.score>0) "+" else "") + item.score
-        holder.time.text = f.format(item.time)
+        holder.time.text = f.format(item.time*1000L)
     }
 
 }

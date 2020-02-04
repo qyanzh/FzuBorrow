@@ -60,10 +60,11 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tv_good_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="32dp"
-                    android:text="32#5 活动室"
+                    tools:text="32#5 活动室"
                     android:textColor="#000"
                     android:textSize="16sp" />
 
@@ -84,7 +85,7 @@
                     android:textSize="16sp" />
 
                 <TextView
-                    android:id="@+id/tv_name"
+                    android:id="@+id/tv_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="32dp"
@@ -130,6 +131,8 @@
 
 
                 <RatingBar
+                    style="?attr/ratingBarStyleIndicator"
+                    android:theme="@style/RatingBar"
                     android:id="@+id/rating_bar"
                     android:isIndicator="true"
                     android:layout_width="wrap_content"
@@ -144,7 +147,7 @@
                     android:layout_height="100dp"
                     android:background="#f2f2f2"
                     android:gravity="top"
-                    android:hint="很好很好"
+                    android:hint="输入评价"
                     android:padding="16dp" />
 
             </LinearLayout>
